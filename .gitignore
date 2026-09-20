@@ -32,3 +32,7 @@ Audio/
 # Capture experiment local output
 linux-research/reports/capture-build.json
 linux-research/reports/capture-test-*/
+
+# Duplex integration local output
+linux-research/reports/duplex-build.json
+linux-research/reports/duplex-session-*/

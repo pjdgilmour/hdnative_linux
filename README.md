@@ -1,8 +1,10 @@
 # HD Native Linux
 
 Driver experimental Linux para **Avid HD Native PCIe + Digidesign 192 I/O**.
-Reprodução nas **saídas analógicas 1–2, a 48 kHz**, confirmada no Harrison
-MixBus 12, Audacious e navegador através do PipeWire.
+**Reprodução e captura simultâneas nas entradas/saídas analógicas 1–2,
+a 48 kHz/24 bits**, confirmadas no MixBus com reprodução pelo próprio MixBus
+e pelo navegador, via PipeWire. A versão anterior de reprodução também foi
+validada com Audacious. Veja [o marco duplex](linux-research/reports/duplex-apps-confirmed.md).
 
 ## Compilar e usar
 
@@ -14,17 +16,20 @@ Python 3, kmod e `spa-json-dump`. A integração usa WirePlumber, `pactl`,
 Na raiz deste repositório:
 
 ```sh
-./linux-research/build-desktop.sh
-sudo ./linux-research/desktop-driver.sh start
-./linux-research/desktop-driver.sh status
+./linux-research/build-duplex.sh
+sudo ./linux-research/desktop-driver.sh stop
+sudo ./linux-research/duplex-driver.sh start
+./linux-research/duplex-driver.sh status
 ```
 
-Selecione **Avid HD Native — 192 I/O (saídas 1–2)** no controle de som.
-A ativação começa com volume de −40 dB; aumente gradualmente.
+Selecione **Avid HD Native — 192 I/O Duplex** como saída e entrada nos
+aplicativos. A saída começa em −40 dB; aumente gradualmente. A entrada
+começa em 0 dB de ganho de software. Com loopback físico conectado, mantenha
+a monitoração de entrada desligada para evitar realimentação.
 Para encerrar:
 
 ```sh
-sudo ./linux-research/desktop-driver.sh stop
+sudo ./linux-research/duplex-driver.sh stop
 ```
 
 A compilação gera o módulo e o manifesto local de hashes exigido pelo
@@ -37,9 +42,10 @@ reinicia esse serviço; o módulo não é instalado para carga automática no bo
 
 - Reprodução estéreo; PCM nativo ALSA `S24_3LE`, 48 kHz. O PipeWire converte
   os formatos dos aplicativos.
-- Captura analógica 1–2 confirmada em loopback de 10 segundos pelo módulo
-  de teste separado. Captura nos aplicativos, operação duplex ALSA, outros
-  canais/taxas e partida a frio ainda não foram validados.
+- Captura analógica 1–2 e operação duplex nos aplicativos confirmadas.
+  A sessão duplex registrou mais de 12 minutos de PCM em cada direção,
+  sem XRUNs ou erros. Outros canais/taxas, partida a frio e medições de
+  latência/qualidade ainda não foram validados.
 - A interface precisa estar no estado de 48 kHz utilizado nos testes;
   o módulo não carrega firmware nem configura clock.
 - O endereço PCI padrão é `0000:81:00.0`; as verificações de identidade,
@@ -47,8 +53,9 @@ reinicia esse serviço; o módulo não é instalado para carga automática no bo
 - Código experimental de kernel: salve o trabalho antes dos testes.
   Desative o módulo antes de suspender/hibernar.
 
-Veja [uso e detalhes do módulo](linux-research/desktop/README.md) e
-[a validação nos aplicativos](linux-research/reports/desktop-apps-confirmed.md).
+Veja [uso e detalhes do módulo duplex](linux-research/desktop/duplex.md).
+A [versão anterior de reprodução](linux-research/desktop/README.md) permanece
+disponível como alternativa, com gerenciador e módulo próprios.
 
 ## Captura analógica confirmada
 
@@ -56,7 +63,16 @@ O [teste separado das entradas analógicas 1–2](linux-research/reports/capture
 gravou 10 segundos em loopback físico a 48 kHz/24 bits, com correspondência
 dos tons por canal, zero XRUNs e restauração confirmada. Veja o
 [registro da validação](linux-research/reports/first-capture-confirmed.md).
-A captura ainda não está integrada ao módulo de reprodução para aplicativos.
+O módulo duplex separado também foi confirmado nos aplicativos, conforme
+o [registro da sessão](linux-research/reports/duplex-apps-confirmed.md).
+
+## Reprodução e captura simultâneas
+
+A [versão duplex para aplicativos](linux-research/desktop/duplex.md) passou
+nos testes simulados e no ensaio real informado pelo usuário: gravação no
+MixBus durante reprodução pelo MixBus e pelo navegador, com zero XRUNs nas
+duas direções. Os módulos anteriores permanecem preservados. Os contadores
+não identificam o aplicativo de cada stream nem medem latência total.
 
 ## Organização
 
@@ -70,7 +86,7 @@ O módulo de reprodução foi copiado sem alterações; o experimento de captura
 foi adicionado depois, em arquivos separados. Os caminhos da documentação
 foram adaptados para `/home/paulo/hdnative_linux/`. Os manifestos históricos
 em `reports/` descrevem builds anteriores; não substituem o manifesto gerado
-por `build-desktop.sh`. Os scripts antigos de pesquisa preservam seus
+pelos scripts `build-desktop.sh` e `build-duplex.sh`. Os scripts antigos de pesquisa preservam seus
 pré-requisitos e verificações dos experimentos originais.
 
 Instaladores, binários/firmwares proprietários, dumps de disassembly,
@@ -80,7 +96,8 @@ a evidências locais ausentes estão identificadas nas notas da pesquisa.
 
 ## Testes sem hardware
 
-A compilação acima executa os nove testes do gerenciador com falhas simuladas.
+A compilação duplex executa testes de buffers, funções do driver, limpeza
+e 11 testes do gerenciador com falhas simuladas.
 Outros testes podem ser executados individualmente, por exemplo:
 
 ```sh

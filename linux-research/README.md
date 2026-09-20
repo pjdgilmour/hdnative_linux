@@ -1,9 +1,13 @@
 # HD Native PCIe + 192: investigação Linux
 
+**Duplex nos aplicativos confirmado:** reprodução e gravação simultâneas
+no MixBus, com fontes no próprio MixBus e no navegador, zero XRUNs/erros.
+[Resultado e limites](reports/duplex-apps-confirmed.md).
+
 **Captura analógica 1–2 confirmada:** teste ALSA separado, 10 segundos
 a 48 kHz/24 bits, padrão de loopback por canal correspondente, zero XRUNs.
-Veja [o registro](reports/first-capture-confirmed.md). Captura nos aplicativos
-ainda não está integrada ao módulo de reprodução.
+Veja [o registro](reports/first-capture-confirmed.md). A integração duplex posterior foi confirmada nos aplicativos, conforme
+o marco acima.
 
 **Versão para aplicativos validada:** `avid_native_desktop.ko` funcionou com
 Harrison MixBus 12, Audacious e áudio no navegador via PipeWire. Seis streams,

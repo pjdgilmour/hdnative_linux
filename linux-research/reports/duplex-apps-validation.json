@@ -1,0 +1,62 @@
+{
+  "session": "duplex-session-20260920-195819",
+  "user_report": "Gravação no MixBus com reprodução pelo próprio MixBus e pelo navegador funcionou.",
+  "stats": {
+    "bound": "Y",
+    "starts": "2",
+    "stops": "2",
+    "xruns": "0",
+    "last_error": "0",
+    "total_frames": "36321991",
+    "last_frames": "34671804",
+    "ring_wraps": "4433",
+    "rx_discarded": "349",
+    "max_poll_us": "2310",
+    "mute_restored": "Y",
+    "route_restored": "Y",
+    "max_stream_seconds": "0",
+    "playback_starts": "2",
+    "playback_stops": "2",
+    "capture_starts": "2",
+    "capture_stops": "2",
+    "playback_xruns": "0",
+    "capture_xruns": "0",
+    "capture_frames": "36576837"
+  },
+  "pci_header_equal": true,
+  "pci_restored": true,
+  "pci_unbound": true,
+  "cleanup_errors": [],
+  "ready": true,
+  "module_sha256": "67061d70adc1eafbceaa0a4bd69310642d315d976a73c3814e273b9e9be90cf5",
+  "build": {
+    "kernel": "6.12.107+deb13-amd64",
+    "vermagic": "6.12.107+deb13-amd64 SMP preempt mod_unload modversions",
+    "load_files_sha256": {
+      "kernel/avid_native_duplex.ko": "67061d70adc1eafbceaa0a4bd69310642d315d976a73c3814e273b9e9be90cf5",
+      "desktop/91-avid-native-duplex.conf": "f731f6224ab72743a1849b3f9aa5ab0998b4a1524b61461756dfe8473a2fc3c6",
+      "duplex-driver.sh": "a835dfac5add9ef97b47eb7a6df68dc445108fd9499cf692df0b44b67b39480d",
+      "tools/manage_duplex.py": "d5294d60a7b4faa00b4986eb680e798414f627a823200a903e946b8c64fe1c05"
+    },
+    "source_files_sha256": {
+      "kernel/avid_native_duplex.c": "8fbafc8c8867aa6379c54cdd7c5b1eb389f197ebe04730e6e5bfcb3f47d5ed83",
+      "kernel/native_duplex_ring.h": "d40cd5af3c66e7141368d249cd7ee2729643768f2c49c32dfd40dd04da89d198",
+      "kernel/native_capture_ring.h": "c13fc99ab1dbdac2baf28c41a9351ab48033c88d98c24ab993d8a67d990db47f",
+      "kernel/native_192_capture_control.h": "a9dbf07707f94d77637ae3849258efcf4ce7a032cc26b07fe7f5bc04544cb4b8",
+      "kernel/Makefile": "70717c092a92f09aabac7cdf70a095a98c44c9e971549e08cd5de45f5272cb15",
+      "build-duplex.sh": "81203e5682c2ff02be73a7680e0889b47475250a4574dabe6a3cb6820e582f55",
+      "tools/test_duplex_ring.py": "b9f627af52a3c12de0dde5f7be60cba2154cc7e41a1d618333f812d2a2dc8357",
+      "tools/test_duplex_streams.py": "9339f0fe9becaa799988e909154ad9dccd5e9208dc5fcc7e5a720eca29f4e348",
+      "tools/test_duplex_lifecycle.py": "27d1d9032375159f02e029e0166af6d19f36da5206f4bad9a2bf568974fdd22c",
+      "tools/test_duplex_manager.py": "9a97fa12be029d48bc0ee94f4748d1f05c3aa6a4c8414b87826156e0b80aa3c0"
+    },
+    "status": "compiled and simulated; independent duplex hardware validation pending"
+  },
+  "build_hashes_rechecked": true,
+  "evidence_sha256": {
+    "after-close-stats.json": "c6519f89955e3e31dfc4d3d02c6e180bbf0031b868e89460def85844f682e791",
+    "session.json": "72da918976dbc4f3f57234e7344d069aab622f6699605d1e7a7b0a34462cab39",
+    "module.log": "f004a3c2bf45459de14dc1ebc5a7789149afbb0caf0520df7c7f097f27c406f6"
+  },
+  "scope": "Desktop duplex confirmed by user and logs; recorded MixBus audio files not independently inspected."
+}

@@ -8,3 +8,5 @@ clean:
 	$(MAKE) -C $(KDIR) M=$(CURDIR) clean
 
 obj-m += avid_native_capture.o
+
+obj-m += avid_native_duplex.o
