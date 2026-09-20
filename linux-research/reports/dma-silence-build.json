@@ -1,0 +1,7 @@
+{
+  "sha256": "2bc19662a3c836a803acce98daf674bba3e487cfa8fb6eb36123f01b027e658a",
+  "kernel": "6.12.107+deb13-amd64",
+  "W": "1",
+  "compile": "passed",
+  "hardware": "user reported result=0, tx_consumed=9, rx_produced=0, status_sequence=2, pci_restored=Y, module removed"
+}

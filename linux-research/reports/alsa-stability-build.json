@@ -1,0 +1,24 @@
+{
+  "time_utc": "2026-09-20T20:37:16.980043+00:00",
+  "status": "stability_test_prepared; hardware_execution_pending",
+  "checks": {
+    "build": "W=1; no warnings; 6.12.107+deb13-amd64",
+    "supervisor": "8 tests passed with disposable child processes; no hardware",
+    "long_audio": "40 blocks identical; 15360000 stereo S24_3LE frames; -40 dBFS verified",
+    "transport": "DMA, prepare/start/stop and cleanup routines match audible milestone",
+    "helpers": "ring and peripheral headers match audible milestone",
+    "runner": "bash -n passed"
+  },
+  "hardware_loaded": false,
+  "sha256": {
+    "kernel/avid_native_alsa.c": "ff2639bc6aaac1906b780aff1221af755ecf701827581a0bb201a4934be74113",
+    "kernel/avid_native_alsa.ko": "196417b11f10dd43424ec4a6d76d5ff78487ac054e905fe1708dd5f2ec7e1b44",
+    "kernel/native_pcm_ring.h": "93abc3b86fd8de0439a413a643e19be58fac74b9e6d34a90fb3b284923e6aeba",
+    "kernel/native_192_control.h": "83f3cf4e947db8b6fcdd0a8b4348e105f28c82b5d4e32e1f895f9fca5526d62e",
+    "run-alsa-test.sh": "33f24cc4190fececed68e238d445459b67308e1d5781415d4111bfe93d1575a0",
+    "tools/supervise_alsa.py": "99c762fa0fdd7ac404322e747b09a5276b3b77530d5dfcfef8073ce6814d733d",
+    "tools/test_alsa_supervisor.py": "39b5aea9b4ef5e5ef046e93bf041bf7288133ba9c4bab609fe9d5152c8d58644",
+    "tools/make_alsa_tone.py": "1e155b98153c1b71aaa5334f508e0b98f955d7cc63407238b8713c8bf1d8c716",
+    "reports/alsa-stability-test.md": "3865e1a33ff373b5a5f124d54099da6ba635bb21bd85bd12637ba7bea2fc74f9"
+  }
+}

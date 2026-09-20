@@ -1,0 +1,34 @@
+# Kernel build output
+*.o
+*.ko
+*.mod
+*.mod.c
+.*.cmd
+Module.symvers
+modules.order
+.tmp_versions/
+# Python
+__pycache__/
+*.py[cod]
+# Local hardware runs and generated audio
+linux-research/read-native-id
+linux-research/identify-192
+linux-research/reports/desktop-build.json
+linux-research/reports/desktop-session-*/
+linux-research/reports/alsa-test-*/
+linux-research/reports/alsa-music-*/
+linux-research/prepared-audio/
+linux-research/milestones/
+Audio/
+*.raw
+*.mp3
+*.wav
+# Proprietary installer / analysis inputs
+*.msi
+*.dll
+*.sys
+*.exe
+
+# Capture experiment local output
+linux-research/reports/capture-build.json
+linux-research/reports/capture-test-*/

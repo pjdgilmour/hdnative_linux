@@ -1,0 +1,112 @@
+{
+  "session": "capture-test-pYSEYe",
+  "user_confirmed_success": true,
+  "analysis_rechecked": true,
+  "wav_matches_raw": true,
+  "pci_header_matches": true,
+  "stats": {
+    "bound": "Y",
+    "starts": "1",
+    "stops": "1",
+    "xruns": "0",
+    "last_error": "0",
+    "total_frames": "480299",
+    "last_frames": "480299",
+    "ring_wraps": "29",
+    "tx_frames": "480309",
+    "max_poll_us": "1604",
+    "mute_restored": "Y",
+    "route_restored": "Y"
+  },
+  "analysis": {
+    "frames": 480000,
+    "rate": 48000,
+    "format": "S24_3LE",
+    "channels": [
+      {
+        "peak_dbfs": -38.92,
+        "rms_dbfs": -45.94,
+        "dc": -3.865437855323156e-05,
+        "nonzero_samples": 469563,
+        "near_clip_samples": 0
+      },
+      {
+        "peak_dbfs": -39.95,
+        "rms_dbfs": -46.91,
+        "dc": 0.00010667108620206515,
+        "nonzero_samples": 469968,
+        "near_clip_samples": 0
+      }
+    ],
+    "loopback": true,
+    "nonzero_both_channels": true,
+    "loopback_pattern_matched": true,
+    "spectral_windows": [
+      [
+        {
+          "frequency": 750,
+          "amplitude": 0.011314691496226634,
+          "amplitude_dbfs": -38.93,
+          "tone_fraction": 0.9999999224393606
+        },
+        {
+          "frequency": 1500,
+          "amplitude": 1.0386832130292218e-08,
+          "amplitude_dbfs": -159.67,
+          "tone_fraction": 0.003245534169915151
+        }
+      ],
+      [
+        {
+          "frequency": 750,
+          "amplitude": 1.346403217127547e-08,
+          "amplitude_dbfs": -157.42,
+          "tone_fraction": 0.0031122135681177247
+        },
+        {
+          "frequency": 1500,
+          "amplitude": 0.010048727372089592,
+          "amplitude_dbfs": -39.96,
+          "tone_fraction": 0.9999995618421947
+        }
+      ],
+      [
+        {
+          "frequency": 750,
+          "amplitude": 0.011313558506818385,
+          "amplitude_dbfs": -38.93,
+          "tone_fraction": 0.9999999775482863
+        },
+        {
+          "frequency": 1500,
+          "amplitude": 0.010048376165095529,
+          "amplitude_dbfs": -39.96,
+          "tone_fraction": 0.9999999243067863
+        }
+      ]
+    ]
+  },
+  "evidence_sha256": {
+    "capture.raw": "075bf326fc9c7cfd047fbf870b7b69482a4792121fc660423e44c1523a3d9c52",
+    "capture.wav": "0033a8d4cb310994c2f9314a969ba30bb31bcc02df608b889d103e9d9263c2f3",
+    "capture.json": "7081b3b2cd5d7f5af35349b2bc05f6f87fdafedab16ec345ae210dba36d424e4",
+    "stats.txt": "c4c34c26ed640253eb0f246d50e4252d5d96f47e34395ac629de2165585cf3ef",
+    "console.log": "7fe80707a53433c885d2e3a42cf6b9c153bd09d8ac5ec6dde5e5460e137cc79f",
+    "module.log": "acf8a4c3119ec8c40872da54b877a3b0bd2094731dac3234b95bf155697307c8",
+    "pci-before.bin": "6a45ff7cbca030dab3f067aee1e252cfeb0767cc0b03b8e33ba4f34bdec981da",
+    "pci-after.bin": "6a45ff7cbca030dab3f067aee1e252cfeb0767cc0b03b8e33ba4f34bdec981da"
+  },
+  "build": {
+    "kernel": "6.12.107+deb13-amd64",
+    "vermagic": "6.12.107+deb13-amd64 SMP preempt mod_unload modversions",
+    "sha256": {
+      "kernel/avid_native_capture.ko": "7c6e1bddf87df0c4e2b971287c9c52373b576f0fef6df5c55416af05a6c2dd29",
+      "kernel/avid_native_capture.c": "635a1d71220df4364c5c6293782cec8452fe7074025210e9e6327f00a15cc3f0",
+      "kernel/native_capture_ring.h": "c13fc99ab1dbdac2baf28c41a9351ab48033c88d98c24ab993d8a67d990db47f",
+      "kernel/native_192_capture_control.h": "a9dbf07707f94d77637ae3849258efcf4ce7a032cc26b07fe7f5bc04544cb4b8",
+      "run-capture-test.sh": "097808aa7da5c6b261c697381b7c9a366fcb99c475c8cf55cca5ea9f5d1eea5d",
+      "tools/analyze_capture.py": "70dcbe5f6f9bd9c169fb4700deeb000eec7c8360eeb98d2392928ee13632b79d"
+    }
+  },
+  "scope": "10 s physical analog loopback; standalone root-only ALSA capture; desktop capture/independent ALSA duplex not validated"
+}

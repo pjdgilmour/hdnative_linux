@@ -1,0 +1,31 @@
+{
+  "time_utc": "2026-09-20T20:17:31.793483+00:00",
+  "status": "audible_alsa_playback_confirmed_by_user",
+  "build_record": "alsa-prototype-build.json",
+  "all_build_hashes_matched_before_documentation_update": true,
+  "run_directory": "alsa-test-TNhjQF",
+  "starts": 2,
+  "stops": 2,
+  "xruns": 0,
+  "last_error": 0,
+  "total_frames": 770048,
+  "frames_per_session": 385024,
+  "source_frames": 384000,
+  "ring_wraps": 94,
+  "rx_discarded": 770049,
+  "max_poll_us": 1618,
+  "pci_64_bytes_verified_equal": true,
+  "module_removed_reported": true,
+  "pci_unbound_reported": true,
+  "mute_restored_both_sessions": true,
+  "route_restored_both_sessions": true,
+  "channel_separation_explicitly_confirmed": false,
+  "long_term_stability_tested": false,
+  "sha256": {
+    "reports/alsa-test-TNhjQF/console.log": "a0f2994a8f56133f370dd2d8c44ba9b5bf6ecffdfdbedc61cd7ac441973e2092",
+    "reports/alsa-test-TNhjQF/pci-before.bin": "6a45ff7cbca030dab3f067aee1e252cfeb0767cc0b03b8e33ba4f34bdec981da",
+    "reports/alsa-test-TNhjQF/tone.raw": "8864e7646a1c3ca7401bf66ee70bca1f27f2f35b5e539e41815b5434d6df1e55",
+    "reports/alsa-test-TNhjQF/pci-after.bin": "6a45ff7cbca030dab3f067aee1e252cfeb0767cc0b03b8e33ba4f34bdec981da",
+    "reports/alsa-test-TNhjQF/module.log": "6fb57fcc967ac864b10c076e0453e8f062682d660774c8a9c169317b98f47799"
+  }
+}

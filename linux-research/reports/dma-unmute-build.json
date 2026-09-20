@@ -1,0 +1,21 @@
+{
+  "kernel": "6.12.107+deb13-amd64",
+  "compile_W1": "passed without warnings",
+  "control_helper_fault_simulation": "passed",
+  "script_syntax": "passed",
+  "hardware_unmute_test": "completed: 2 -> 0 -> 2 verified; audible relay-like click, no tone heard; TX MMIO 9 -> 7197; stale-memory-based result=-110",
+  "control_transition_expected": [
+    2,
+    0,
+    2
+  ],
+  "peak_dbfs": -40,
+  "hashes": {
+    "kernel/avid_native_dma_probe.ko": "e70c97188a24f71fd58e8d6100e91232f5dd18ba32c82e05cd889e35d7a630f1",
+    "kernel/avid_native_dma_probe.c": "60983ebafb683cb9779919edac4ea2ba1be12bdc4ec3f1392b53db845163e758",
+    "kernel/native_192_control.h": "b11555ab43f9d3ceea3a6b8e827e6ff1d7e8d17a44c7e30d8ab812d10eba5f44",
+    "kernel/native_tone.h": "b4303d587a0c94d03420697e72b3556a5248325dcb064b6f6f987539f85dc2f3",
+    "tools/test_192_control.py": "0c9dbda622cb433a41b177f61e4ad4976751806b6fc817cb74ee91f61ee3bac8",
+    "run-dma-tone.sh": "d2d1b090aef447533c27b29d44c9cb5f967c08cd0eb3b1b0af3c899e05cbccd5"
+  }
+}

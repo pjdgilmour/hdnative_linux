@@ -1,0 +1,14 @@
+{
+  "inspection_tests": "16 passed",
+  "TX_progress_regression": "passed",
+  "kernel_W1": "passed without warnings",
+  "routing_hardware_readback": "two identical all-zero 30-byte tables reported; register semantics still provisional",
+  "MMIO_result_fix_hardware": "pending",
+  "sha256": {
+    "identify-192": "ae1aadc1c590c9d10368519343b6c48c0615f18202057e975bd533f13e93a9fd",
+    "kernel/avid_native_dma_probe.ko": "c2020cddde28fda90994593d64b4e03d3c88989786b182192dd0a01498aba9e6",
+    "tools/identify_192.c": "516eb68aec9f352295cfb4ab7e185e26d04d2d9e368649d89f2a7c5b160d6cb8",
+    "tools/digilink_query.h": "f8fa81dc4dab3764bea3541ce063a2b37919f75b538a019c0dea421ca8249dcb",
+    "kernel/avid_native_dma_probe.c": "801b64a8e6d85238e635fbf44bcc2031860327c66a304198a26192625cda2d7e"
+  }
+}

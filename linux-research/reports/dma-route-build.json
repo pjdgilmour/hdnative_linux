@@ -1,0 +1,27 @@
+{
+  "kernel": "6.12.107+deb13-amd64",
+  "hardware_route_test": "passed: user heard audio; result=0; TX MMIO 9 -> 7208; route 0 -> 1 -> 0, mute 2 -> 0 -> 2; PCI restored; module removed",
+  "kernel_W1": "passed without warnings",
+  "route_and_mute_fault_simulation": "passed",
+  "shell_syntax": "passed",
+  "route_reg": "bank 1 / 0x4d",
+  "route_expected": [
+    0,
+    1,
+    0
+  ],
+  "mute_expected": [
+    2,
+    0,
+    2
+  ],
+  "peak_dbfs": -40,
+  "sha256": {
+    "kernel/avid_native_dma_probe.ko": "c1576a74c73abe2744e4636164fb87cc596104623be9bf35f2f4920486ea6994",
+    "kernel/avid_native_dma_probe.c": "67b1dd9d23a5f13931986c630ab7ea9931e51362b9c9d9de2b9c63d720e9f0df",
+    "kernel/native_192_control.h": "83f3cf4e947db8b6fcdd0a8b4348e105f28c82b5d4e32e1f895f9fca5526d62e",
+    "tools/test_192_control.py": "390de98e0766c7f180bf6bb3dc49d14f33b76d43b876c0f2e971de1d2a4761f7",
+    "run-dma-tone.sh": "c7bbc7f17d8812dfd243e8b015bc736206274265b2a5ff46167823155d1567a5"
+  },
+  "audible_evidence": "first-audible-playback.md"
+}

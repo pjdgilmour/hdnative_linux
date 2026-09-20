@@ -1,0 +1,29 @@
+{
+  "time_utc": "2026-09-20T20:09:11.721704+00:00",
+  "kernel": "6.12.107+deb13-amd64",
+  "status": "compiled_and_simulation_tested; hardware_execution_pending",
+  "build_command": "make -C linux-research/kernel -j2 W=1",
+  "build_warnings": 0,
+  "checks": {
+    "pcm_ring": "7 passed; UBSan; 3000 randomized refill/consume iterations",
+    "lifecycle": "5 scenario groups passed; ASan/UBSan; leak detection disabled under ptrace",
+    "192_control": "passed existing protocol and failure-injection checks",
+    "tone": "384000 frames, stereo S24_3LE, 48000 Hz, -40 dBFS, verified",
+    "script": "bash -n passed; non-root invocation refused",
+    "dma_setup_stop": "identical to first audible probe except struct name"
+  },
+  "hardware_loaded": false,
+  "sha256": {
+    "kernel/avid_native_alsa.c": "9997a8e087ce762ddb4ee442cbd3d9d421ef291657f589aea254fab531f75cb6",
+    "kernel/avid_native_alsa.ko": "058da0f1b6ca20a09cb15c7dc845dbf5858440569af0f38e5a8767f2d744ca63",
+    "kernel/native_pcm_ring.h": "93abc3b86fd8de0439a413a643e19be58fac74b9e6d34a90fb3b284923e6aeba",
+    "kernel/native_192_control.h": "83f3cf4e947db8b6fcdd0a8b4348e105f28c82b5d4e32e1f895f9fca5526d62e",
+    "kernel/Makefile": "99f6aa736a0495789df0a22d7c65ac9c36a4ea7dcff6a4b70a90b79f787806d8",
+    "run-alsa-test.sh": "879c836bc70958fe3df6d4d77c4e9f8ba06d433dcfcde4c2f977dc313ad82d04",
+    "tools/test_pcm_ring.py": "ae821e0a72448edbf1fab50b572b44e2963fd7fca528260f1968035aa29495ae",
+    "tools/test_alsa_lifecycle.py": "59869e492cb48ce71fb1e52527a230384b8544cfce94bfa27b3b768e7798893d",
+    "tools/make_alsa_tone.py": "a8a610e863a7e54795935aaeaeffce4bfdb399a3ddcf3434942abc379523427a",
+    "reports/alsa-playback-prototype.md": "0bb43f6238da58b6b0351c764d511c76010ab2653986f531bbf855f5070ea75a",
+    "reports/pci-before-alsa-prototype.json": "7032800204fe88102ca953ee22318e7e72b72055f4bdd3a7e40f90b6bcb0e98c"
+  }
+}

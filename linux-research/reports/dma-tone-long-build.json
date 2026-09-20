@@ -1,0 +1,14 @@
+{
+  "sha256": "58b643a19c4075e8147b905789c384b0de417cc1e0bd88dff1896b19d21bca66",
+  "kernel": "6.12.107+deb13-amd64",
+  "compile_W1": "passed",
+  "PCM_test": "test_tone.py passed for 1024 and 6144 frames",
+  "shell_syntax": "passed",
+  "hardware_long_mode": "user confirms OUTPUT 1-2 LEDs; no sound or DEQ2496 meter activity; TX MMIO 9 -> 7211; module removed",
+  "peak_dBFS": -40,
+  "tone_frames_long": 6144,
+  "deadline_ms_long": 160,
+  "tx_stop_index_long": 7168,
+  "frame_buffer_size": 8192,
+  "queued_frames": 8191
+}

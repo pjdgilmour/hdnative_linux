@@ -1,0 +1,64 @@
+{
+  "time_utc": "2026-09-20T21:54:06.172343+00:00",
+  "status": "desktop_application_playback_confirmed_by_user",
+  "applications": [
+    "Harrison MixBus 12",
+    "Audacious",
+    "web browser (unspecified)"
+  ],
+  "run_directory": "reports/desktop-session-20260920-182735",
+  "driver_stats": {
+    "bound": "Y",
+    "starts": "6",
+    "stops": "6",
+    "xruns": "0",
+    "last_error": "0",
+    "total_frames": "59017058",
+    "last_frames": "35106416",
+    "ring_wraps": "7201",
+    "rx_discarded": "59016998",
+    "max_poll_us": "2508",
+    "mute_restored": "Y",
+    "route_restored": "Y",
+    "max_stream_seconds": "0"
+  },
+  "session": {
+    "owner": "avid-native-desktop-v1",
+    "uid": 1000,
+    "user": "paulo",
+    "started_at": "2026-09-20 18:27:35",
+    "log_directory": "/home/paulo/Avid_HD_Driver_26.4.1_Repair_Package/linux-research/reports/desktop-session-20260920-182735",
+    "pci_before": "af1180ef000110000000800408000000040040fb000000000000000000000000000000000000000000000000af1180ef000000005000000000000000ff010000",
+    "rule_sha256": "f77d140bbdc8708230df1b11c0654bb3cf379564efc66e28ce904012108288f2",
+    "rule_owned": true,
+    "default_before": "alsa_output.usb-Yamaha_Corporation_AG06_AG03-00.pro-output-0",
+    "restart_wireplumber": true,
+    "module_sha256": "ab08d77dfc1bebc4470e21436ba2c1c99eb27002b3f36f0c80d36d3b293acb6f",
+    "sink_name": "avid_hd_native_192",
+    "initial_volume_db": -40,
+    "ready": true,
+    "was_default_on_stop": true,
+    "pci_after": "af1180ef000110000000800408000000040040fb000000000000000000000000000000000000000000000000af1180ef000000005000000000000000ff010000",
+    "pci_restored": true,
+    "pci_unbound": true,
+    "cleanup_errors": []
+  },
+  "build_hashes_verified_before_documentation_update": true,
+  "screenshot": "reports/desktop-apps-confirmed.png",
+  "limitations": [
+    "playback only",
+    "2 channels",
+    "48 kHz hardware rate",
+    "no cold-boot validation",
+    "manual activation"
+  ],
+  "sha256": {
+    "reports/desktop-apps-confirmed.png": "666037b9bf85661bff23bb0b125ac67a5f5e147570a6f04854bc10ad337f091c",
+    "reports/desktop-session-20260920-182735/module-stats.json": "16eed60ad788d44052153216f14b2f2fd64bd638e7373a6a67238455f7158288",
+    "reports/desktop-session-20260920-182735/module.log": "43afff70f0cfa289ae8025278bd3ee4a5f44e95f7d4c537689dade5f44966483",
+    "reports/desktop-session-20260920-182735/pipewire.json": "457c68df261e8b52de26f5e1e18d8aa2949a39f7a25d647f459cf551daa91983",
+    "reports/desktop-session-20260920-182735/wireplumber.log": "6d5d2c0f818ac7e0aadf181020c27b477c34d24673e081455a9acc4d4fe1edf5",
+    "reports/desktop-session-20260920-182735/after-close-stats.json": "16eed60ad788d44052153216f14b2f2fd64bd638e7373a6a67238455f7158288",
+    "reports/desktop-session-20260920-182735/session.json": "70fdfb84d9f4642250a8064831314087fd498211e2f5b24560f9d122b2f683c8"
+  }
+}

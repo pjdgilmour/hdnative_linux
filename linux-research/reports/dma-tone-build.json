@@ -1,0 +1,9 @@
+{
+  "sha256": "2b2c51798cfee149b3fdb343deb8059b9875af9f8d611eb085eec4c14337b4d0",
+  "kernel": "6.12.107+deb13-amd64",
+  "compile_W1": "passed",
+  "PCM_test": "test_tone.py passed",
+  "hardware": "TX MMIO advances; user confirms OUTPUT channel 1-2 LEDs responding, no audible sound",
+  "user_result": "dma-tone-user-run.txt",
+  "pci_header_restored": true
+}
