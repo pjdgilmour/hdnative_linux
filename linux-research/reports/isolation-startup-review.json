@@ -1,0 +1,246 @@
+{
+  "hardware_reexecuted": false,
+  "note": "Offline review only. Original capture.json and session.json remain unchanged. Sequence stopped before stages 3 and 4.",
+  "sessions": [
+    {
+      "session": "channelmap-test-eYBk4q",
+      "expectation": "loopback",
+      "original_session_passed": true,
+      "revised_signal_assessment": true,
+      "raw_sha256": "c423fef777913ebf45b1a6a4955871212c005dc42bf01f3c905e8ecab155d227",
+      "analysis": {
+        "frames": 480000,
+        "rate": 48000,
+        "format": "S24_3LE",
+        "channels": [
+          {
+            "peak_dbfs": -38.92,
+            "rms_dbfs": -45.94,
+            "dc": -3.864112968246142e-05,
+            "nonzero_samples": 467094,
+            "near_clip_samples": 0
+          },
+          {
+            "peak_dbfs": -39.95,
+            "rms_dbfs": -46.91,
+            "dc": 0.00010654162714878718,
+            "nonzero_samples": 468661,
+            "near_clip_samples": 0
+          }
+        ],
+        "loopback": true,
+        "nonzero_both_channels": true,
+        "loopback_pattern_matched": true,
+        "spectral_windows": [
+          [
+            {
+              "frequency": 750,
+              "amplitude": 0.011313326885826034,
+              "amplitude_dbfs": -38.93,
+              "tone_fraction": 0.9999999745952178
+            },
+            {
+              "frequency": 1500,
+              "amplitude": 3.2187960930667914e-09,
+              "amplitude_dbfs": -169.85,
+              "tone_fraction": 0.0008124955559861765
+            }
+          ],
+          [
+            {
+              "frequency": 750,
+              "amplitude": 1.9973083731219062e-08,
+              "amplitude_dbfs": -153.99,
+              "tone_fraction": 0.007509101982175143
+            },
+            {
+              "frequency": 1500,
+              "amplitude": 0.01004827724049096,
+              "amplitude_dbfs": -39.96,
+              "tone_fraction": 0.9999999427480508
+            }
+          ],
+          [
+            {
+              "frequency": 750,
+              "amplitude": 0.011312714451197775,
+              "amplitude_dbfs": -38.93,
+              "tone_fraction": 0.9999999737196125
+            },
+            {
+              "frequency": 1500,
+              "amplitude": 0.010047751433508122,
+              "amplitude_dbfs": -39.96,
+              "tone_fraction": 0.999999951308441
+            }
+          ]
+        ],
+        "analysis_version": 2,
+        "isolation_windows": {
+          "startup": {
+            "start_seconds": 0,
+            "end_seconds": 1,
+            "channels": [
+              {
+                "rms_dbfs": -63.53,
+                "peak_dbfs": -51.53
+              },
+              {
+                "rms_dbfs": -54.74,
+                "peak_dbfs": -43.5
+              }
+            ]
+          },
+          "steady": {
+            "start_seconds": 1,
+            "end_seconds": 9,
+            "channels": [
+              {
+                "rms_dbfs": -44.98,
+                "peak_dbfs": -38.92
+              },
+              {
+                "rms_dbfs": -46.01,
+                "peak_dbfs": -39.95
+              }
+            ]
+          },
+          "ending": {
+            "start_seconds": 9,
+            "end_seconds": 10,
+            "channels": [
+              {
+                "rms_dbfs": -87.84,
+                "peak_dbfs": -54.53
+              },
+              {
+                "rms_dbfs": -88.68,
+                "peak_dbfs": -54.78
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "session": "channelmap-test-fbJprf",
+      "expectation": "isolation",
+      "original_session_passed": false,
+      "revised_signal_assessment": true,
+      "raw_sha256": "18c1d0d1d85c63ce5af43b29614005ff5316222f1d6a898c66d523d12a47d2ff",
+      "analysis": {
+        "frames": 480000,
+        "rate": 48000,
+        "format": "S24_3LE",
+        "channels": [
+          {
+            "peak_dbfs": -52.82,
+            "rms_dbfs": -73.6,
+            "dc": -3.885995720823606e-05,
+            "nonzero_samples": 461931,
+            "near_clip_samples": 0
+          },
+          {
+            "peak_dbfs": -43.62,
+            "rms_dbfs": -64.77,
+            "dc": 0.00010675423244635264,
+            "nonzero_samples": 467300,
+            "near_clip_samples": 0
+          }
+        ],
+        "loopback": true,
+        "nonzero_both_channels": true,
+        "loopback_pattern_matched": false,
+        "spectral_windows": [
+          [
+            {
+              "frequency": 750,
+              "amplitude": 2.647891635350235e-08,
+              "amplitude_dbfs": -151.54,
+              "tone_fraction": 0.011229132090397298
+            },
+            {
+              "frequency": 1500,
+              "amplitude": 2.159886584514734e-08,
+              "amplitude_dbfs": -153.31,
+              "tone_fraction": 0.005640309382840442
+            }
+          ],
+          [
+            {
+              "frequency": 750,
+              "amplitude": 1.432250372059755e-08,
+              "amplitude_dbfs": -156.88,
+              "tone_fraction": 0.005960377774179705
+            },
+            {
+              "frequency": 1500,
+              "amplitude": 1.6718531022644504e-08,
+              "amplitude_dbfs": -155.54,
+              "tone_fraction": 0.002129196918753471
+            }
+          ],
+          [
+            {
+              "frequency": 750,
+              "amplitude": 3.194883617300969e-08,
+              "amplitude_dbfs": -149.91,
+              "tone_fraction": 0.011750962961204064
+            },
+            {
+              "frequency": 1500,
+              "amplitude": 1.7600328888706774e-08,
+              "amplitude_dbfs": -155.09,
+              "tone_fraction": 0.0043619282769700885
+            }
+          ]
+        ],
+        "analysis_version": 2,
+        "isolation_windows": {
+          "startup": {
+            "start_seconds": 0,
+            "end_seconds": 1,
+            "channels": [
+              {
+                "rms_dbfs": -63.6,
+                "peak_dbfs": -52.82
+              },
+              {
+                "rms_dbfs": -54.77,
+                "peak_dbfs": -43.62
+              }
+            ]
+          },
+          "steady": {
+            "start_seconds": 1,
+            "end_seconds": 9,
+            "channels": [
+              {
+                "rms_dbfs": -112.78,
+                "peak_dbfs": -94.45
+              },
+              {
+                "rms_dbfs": -105.97,
+                "peak_dbfs": -87.59
+              }
+            ]
+          },
+          "ending": {
+            "start_seconds": 9,
+            "end_seconds": 10,
+            "channels": [
+              {
+                "rms_dbfs": -114.52,
+                "peak_dbfs": -101.57
+              },
+              {
+                "rms_dbfs": -107.67,
+                "peak_dbfs": -96.89
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -36,3 +36,11 @@ linux-research/reports/capture-test-*/
 # Duplex integration local output
 linux-research/reports/duplex-build.json
 linux-research/reports/duplex-session-*/
+
+# Channel mapping local output
+linux-research/reports/channelmap-build.json
+linux-research/reports/channelmap-test-*/
+
+# Private copies of saved Windows preferences
+DSIPrefs
+linux-research/reports/windows-prefs-*/

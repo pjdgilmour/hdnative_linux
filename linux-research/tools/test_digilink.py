@@ -15,7 +15,7 @@ HARNESS = r'''
 #include <stdio.h>
 #include <string.h>
 static uint32_t tx[8], rx[8];
-static unsigned writes, mode, cancelled, last_port;
+static unsigned writes, mode, cancelled, last_port, digital_reads;
 static uint64_t now;
 static uint32_t dl_read32(unsigned off) {
     if (off >= 0x7001c && off <= 0x70038 && !(off & 3))
@@ -31,10 +31,15 @@ static void dl_write32(unsigned off, uint32_t v) {
     assert(cmd == 0 || (!(cmd & 255) &&
            ((cmd >= 0x10000 && cmd <= 0x10300) ||
             (cmd >= 0x11000 && cmd <= 0x11700) ||
+            (cmd >= 0x13000 && cmd <= 0x13200) ||
             (cmd >= 0x14000 && cmd <= 0x15d00))));
     assert((v & 0xff000000) == 0xa5000000);
     writes++; last_port = p; tx[p] = v;
-    if (mode == 1 && cmd) rx[p] = 0x11201; /* Wrong response header. */
+    if (cmd >= 0x13000 && cmd <= 0x13200) digital_reads++;
+    if (mode == 4 && cmd == 0x13000) rx[p] = 0; /* Clean missing control0 response. */
+    else if (mode == 4 && cmd == 0x13200) rx[p] = cmd; /* Valid zero, distinct from timeout. */
+    else if (mode == 5 && cmd >= 0x13000 && cmd <= 0x13200) rx[p] = cmd | (digital_reads > 3 ? 2 : 1);
+    else if (mode == 1 && cmd) rx[p] = 0x11201; /* Wrong response header. */
     else if (mode == 2 && !cmd) rx[p] = 0x11001; /* Neutral timeout. */
     else rx[p] = cmd ? cmd | 1 : 0;
     if (mode == 3 && cmd) cancelled = 1;
@@ -45,7 +50,7 @@ static int dl_cancelled(void) { return cancelled; }
 #include "digilink_query.h"
 static void reset(unsigned m) {
     for (unsigned p=0; p<8; p++) { tx[p]=0xa5000000; rx[p]=0; }
-    writes=cancelled=0; now=0; mode=m;
+    writes=cancelled=digital_reads=0; now=0; mode=m;
 }
 int main(void) {
     uint8_t val; uint32_t response; int cleanup;
@@ -95,6 +100,39 @@ int main(void) {
         assert(writes == (allowed ? 2u : 0u));
         if (allowed) assert(response == (0x10000u | (r<<8) | 1) && cleanup==DL_OK);
     }
+    for (unsigned r=0; r<256; r++) {
+        reset(0);
+        int allowed = r<=3 || (r>=0x10 && r<=0x17) || (r>=0x30 && r<=0x32);
+        int status = dl_query_impl(0,r,3,&val,&response,&cleanup);
+        assert(status == (allowed ? DL_OK : DL_BAD_REQUEST));
+        assert(writes == (allowed ? 2u : 0u));
+        if (allowed) assert(response == (0x10000u | (r<<8) | 1) && cleanup==DL_OK);
+    }
+    struct dl_digital_snapshot snap;
+    reset(0);
+    assert(dl_inspect_digital(0,&snap)==DL_OK);
+    assert(snap.complete && snap.stable && snap.attempted==6 && writes==12);
+    reset(4);
+    assert(dl_inspect_digital(0,&snap)==DL_TIMEOUT);
+    assert(!snap.complete && !snap.stable && snap.attempted==6 && writes==12);
+    for(unsigned pass=0;pass<2;pass++) {
+        assert(snap.results[pass][0]==DL_TIMEOUT && snap.cleanup[pass][0]==DL_OK);
+        assert(snap.results[pass][1]==DL_OK && snap.values[pass][1]==1);
+        assert(snap.results[pass][2]==DL_OK && snap.values[pass][2]==0);
+    }
+    reset(1);
+    assert(dl_inspect_digital(0,&snap)==DL_TIMEOUT && snap.attempted==6 && writes==12);
+    assert(!snap.complete && !snap.stable);
+    reset(2);
+    assert(dl_inspect_digital(0,&snap)==DL_TIMEOUT && snap.attempted==1 && writes==2);
+    assert(snap.cleanup[0][0]==DL_TIMEOUT && snap.results[0][1]==DL_NOT_ATTEMPTED);
+    reset(3);
+    assert(dl_inspect_digital(0,&snap)==DL_CANCELLED && snap.attempted==1 && writes==2);
+    reset(5);
+    assert(dl_inspect_digital(0,&snap)==DL_UNSTABLE && snap.complete && !snap.stable);
+    reset(0);tx[0]|=0x11000;
+    assert(dl_inspect_digital(0,&snap)==DL_BUSY && snap.attempted==1 && writes==0);
+    puts("Digital bounded reads: clean timeout continuation, valid zero, unstable data, cleanup failure and cancellation: PASS");
     assert(dl_django_model(0x1515)==17);
     assert(dl_django_model(0x1112)==15);
     assert(dl_django_model(0xffffffff)==0 && dl_django_model(0)==0);
@@ -127,7 +165,7 @@ class DigiLinkTests(unittest.TestCase):
 
     def run_fixture(self, *, command=0x100, version=0x01050040,
                     identity=0xd400, ready=0, fault="", bound=False, expected=3,
-                    inspect=False, routing=False, ctl=0, dma=0):
+                    inspect=False, routing=False, digital=False, ctl=0, dma=0):
         with tempfile.TemporaryDirectory(dir=self.root) as d:
             p = Path(d)
             header = bytearray(64)
@@ -142,7 +180,7 @@ class DigiLinkTests(unittest.TestCase):
             (p / "resource0").write_bytes(bar)
             if bound:
                 (p / "driver").mkdir()
-            arg = "--inspect-routing" if routing else "--inspect-192" if inspect else "--identify-192"
+            arg = "--inspect-digital" if digital else "--inspect-routing" if routing else "--inspect-192" if inspect else "--identify-192"
             r = subprocess.run([str(self.root / "probe"), arg],
                                env={**os.environ, "FIXTURE": d, "FAULT": fault},
                                capture_output=True, text=True, timeout=5)
@@ -176,6 +214,15 @@ class DigiLinkTests(unittest.TestCase):
     def test_routing_refuses_active_dma(self):
         r = self.run_fixture(routing=True, ctl=0xa00, dma=0x400040, ready=1)
         self.assertIn("known quiet transport state", r.stderr)
+
+    def test_digital_requires_identity(self):
+        r = self.run_fixture(digital=True, ctl=0xa00, ready=1)
+        self.assertEqual(r.stdout.count("result=1"), 1)
+        self.assertNotIn("digital pass=", r.stdout)
+
+    def test_digital_refuses_active_dma(self):
+        self.assertIn("known quiet transport state", self.run_fixture(
+            digital=True, ctl=0xa00, dma=0x400040, ready=1).stderr)
 
     def test_ready_without_response_times_out(self):
         r = self.run_fixture(ready=1)

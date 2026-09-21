@@ -3,12 +3,13 @@
  * Bank 1 identity reads; explicit diagnostic mode additionally permits
  * 0x00..0x03 (tentative control readback) and 0x11..0x13 (DSI status reads).
  * Diagnostic level 2 also permits 0x40..0x5d: the DSI routing table range.
+ * Diagnostic level 3 permits only the extra digital module controls 0x30..0x32.
  * No command has the peripheral write bit (bit 23) set.
  */
 #define DL_TX(p) (0x7001cu + 4u * (p))
 #define DL_RX(p) (0x70040u + 4u * (p))
 #define DL_MASK 0x00ffffffu
-enum { DL_OK, DL_TIMEOUT, DL_BUSY, DL_BAD_REQUEST, DL_CANCELLED, DL_CLEANUP };
+enum { DL_OK, DL_TIMEOUT, DL_BUSY, DL_BAD_REQUEST, DL_CANCELLED, DL_CLEANUP, DL_NOT_ATTEMPTED, DL_UNSTABLE };
 
 static int dl_wait(unsigned port, uint32_t command, uint32_t *response)
 {
@@ -31,9 +32,11 @@ static int dl_query_impl(unsigned port, unsigned reg, int diagnostics,
     *response = 0;
     int identity_reg = reg == 0x10 || (reg >= 0x14 && reg <= 0x17);
     int diagnostic_reg = reg <= 3 || (reg >= 0x11 && reg <= 0x13);
+    int digital_reg = reg >= 0x30 && reg <= 0x32;
     int routing_reg = reg >= 0x40 && reg <= 0x5d;
     if (port > 7 || !(identity_reg || (diagnostics && diagnostic_reg) ||
-                     (diagnostics == 2 && routing_reg)))
+                     (diagnostics == 2 && routing_reg) ||
+                     (diagnostics == 3 && digital_reg)))
         return DL_BAD_REQUEST;
     if (dl_cancelled()) return DL_CANCELLED;
     uint32_t tx = dl_read32(DL_TX(port));
@@ -52,6 +55,49 @@ static int dl_query_impl(unsigned port, unsigned reg, int diagnostics,
     *cleanup = dl_wait(port, 0, &idle_response);
     if (dl_read32(DL_TX(port)) & DL_MASK) *cleanup = DL_CLEANUP;
     return result;
+}
+
+
+/* Read only the three addresses derived from the module write adapter.
+ * A clean timeout makes the value unavailable, not zero. Continue only
+ * after acknowledged neutralization; never continue after other errors.
+ * All three addresses remain candidates for readable controls. */
+struct dl_digital_snapshot {
+    uint8_t values[2][3];
+    uint32_t responses[2][3];
+    int results[2][3], cleanup[2][3];
+    unsigned attempted;
+    int complete, stable;
+};
+static int dl_inspect_digital(unsigned port, struct dl_digital_snapshot *s)
+{
+    *s = (struct dl_digital_snapshot){0};
+    for (unsigned pass = 0; pass < 2; pass++)
+        for (unsigned j = 0; j < 3; j++) {
+            s->results[pass][j] = DL_NOT_ATTEMPTED;
+            s->cleanup[pass][j] = DL_NOT_ATTEMPTED;
+        }
+    for (unsigned pass = 0; pass < 2; pass++) {
+        for (unsigned j = 0; j < 3; j++) {
+            int rc = dl_query_impl(port, 0x30 + j, 3, &s->values[pass][j],
+                                  &s->responses[pass][j], &s->cleanup[pass][j]);
+            s->results[pass][j] = rc;
+            s->attempted++;
+            if (s->cleanup[pass][j] != DL_OK)
+                return s->cleanup[pass][j];
+            if (rc != DL_OK && rc != DL_TIMEOUT)
+                return rc;
+        }
+    }
+    s->complete = 1;
+    for (unsigned pass = 0; pass < 2; pass++)
+        for (unsigned j = 0; j < 3; j++)
+            if (s->results[pass][j] != DL_OK) s->complete = 0;
+    if (!s->complete) return DL_TIMEOUT;
+    s->stable = 1;
+    for (unsigned j = 0; j < 3; j++)
+        if (s->values[0][j] != s->values[1][j]) s->stable = 0;
+    return s->stable ? DL_OK : DL_UNSTABLE;
 }
 
 static int dl_query(unsigned port, unsigned reg, uint8_t *value,

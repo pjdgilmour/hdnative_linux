@@ -44,8 +44,10 @@ reinicia esse serviço; o módulo não é instalado para carga automática no bo
   os formatos dos aplicativos.
 - Captura analógica 1–2 e operação duplex nos aplicativos confirmadas.
   A sessão duplex registrou mais de 12 minutos de PCM em cada direção,
-  sem XRUNs ou erros. Outros canais/taxas, partida a frio e medições de
-  latência/qualidade ainda não foram validados.
+  sem XRUNs ou erros. Os pares dos dois bancos analógicos também passaram
+  no ensaio separado de roteamento descrito abaixo. Operação multicanal
+  simultânea, outras taxas, partida a frio e medições de latência/qualidade
+  ainda não foram validadas.
 - A interface precisa estar no estado de 48 kHz utilizado nos testes;
   o módulo não carrega firmware nem configura clock.
 - O endereço PCI padrão é `0000:81:00.0`; as verificações de identidade,
@@ -73,6 +75,26 @@ nos testes simulados e no ensaio real informado pelo usuário: gravação no
 MixBus durante reprodução pelo MixBus e pelo navegador, com zero XRUNs nas
 duas direções. Os módulos anteriores permanecem preservados. Os contadores
 não identificam o aplicativo de cada stream nem medem latência total.
+
+## Mapeamento dos módulos e canais
+
+Este exemplar possui 8 entradas e 16 saídas analógicas, além do módulo
+DIGITAL I/O. O [teste de mapeamento por pares](linux-research/reports/channel-map.md)
+permite conferir todos os pares analógicos em dois grupos de loopback,
+com tons de −40 dBFS, gravação e restauração a cada execução.
+Os dois bancos passaram nos [testes físicos por pares](linux-research/reports/analog-banks-confirmed.md):
+16 saídas analógicas e 8 entradas a 48 kHz/24 bits, zero XRUNs e restauração
+confirmada. A [contraprova de 1–2 e 3–4](linux-research/reports/analog-pair-isolation-confirmed.md)
+também diferenciou seus caminhos com seleções cruzadas. A identificação dos
+conectores depende do cabeamento informado; operação multicanal simultânea
+nos aplicativos ainda não foi implementada. ADAT aguarda o ensaio digital;
+há um diagnóstico de leitura, sem ativação de áudio digital.
+
+```sh
+./linux-research/build-channelmap.sh
+```
+
+Veja as ligações e comandos no guia antes de executar os testes físicos.
 
 ## Organização
 

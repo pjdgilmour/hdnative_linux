@@ -87,11 +87,12 @@ int main(int argc, char **argv)
     void *mapping = MAP_FAILED;
 
     if (argc != 2 && argc != 3) {
-        fprintf(stderr, "Usage: %s --identify-192|--inspect-192|--inspect-routing [0000:81:00.0]\n", argv[0]);
+        fprintf(stderr, "Usage: %s --identify-192|--inspect-192|--inspect-routing|--inspect-digital [0000:81:00.0]\n", argv[0]);
         return 2;
     }
+    const int digital = strcmp(argv[1], "--inspect-digital") == 0;
     const int routing = strcmp(argv[1], "--inspect-routing") == 0;
-    const int diagnostics = routing || strcmp(argv[1], "--inspect-192") == 0;
+    const int diagnostics = digital || routing || strcmp(argv[1], "--inspect-192") == 0;
     if (!diagnostics && strcmp(argv[1], "--identify-192") != 0) return 2;
     if (argc == 3) bdf = argv[2];
     if (sscanf(bdf, "%x:%x:%x.%x", &domain, &bus, &slot, &function) != 4 ||
@@ -223,6 +224,28 @@ int main(int argc, char **argv)
                            pass, port, regs[j], result, response, value, cleanup);
                     if (result != DL_OK || cleanup != DL_OK) { rc = 5; break; }
                 }
+            }
+            if (digital && rc != 5 && !stop_requested) {
+                struct dl_digital_snapshot snapshot;
+                puts("Digital candidate readback: a timeout is unavailable data, not zero. No peripheral writes.");
+                int read_result = dl_inspect_digital(port, &snapshot);
+                for (unsigned pass = 0; pass < 2; pass++) {
+                    for (unsigned j = 0; j < 3; j++) {
+                        if (snapshot.results[pass][j] == DL_NOT_ATTEMPTED) continue;
+                        printf("digital pass=%u slot=%u module=2 bank=1 reg=0x%02x result=%d response=0x%06x ",
+                               pass, port, 0x30+j, snapshot.results[pass][j], snapshot.responses[pass][j]);
+                        if (snapshot.results[pass][j] == DL_OK)
+                            printf("value=0x%02x ", snapshot.values[pass][j]);
+                        else
+                            printf("value=unavailable ");
+                        printf("cleanup=%d\n", snapshot.cleanup[pass][j]);
+                    }
+                }
+                printf("DIGITAL_READS_ATTEMPTED=%u\n", snapshot.attempted);
+                printf("DIGITAL_READS_COMPLETE=%s\n", snapshot.complete ? "yes" : "no");
+                printf("DIGITAL_READS_STABLE=%s\n", snapshot.complete ? (snapshot.stable ? "yes" : "no") : "unavailable");
+                puts("Readback alone does not establish ADAT selection or optical lock.");
+                if (read_result != DL_OK) rc = 5;
             }
             if (routing && rc != 5 && !stop_requested) {
                 uint8_t previous_values[30] = {0};
