@@ -1,0 +1,53 @@
+{
+  "scope": "Offline comparison of user-reported Windows optical loopback export; physical path from user and screenshot",
+  "files": {
+    "capture": {
+      "name": "adat_teste.wav",
+      "sha256": "4affdb2790ae02bc8153edb054aa0f5aaddd1ec4509fef649761264d429ea7fa"
+    },
+    "reference": {
+      "name": "adat-reference-48k.wav",
+      "sha256": "bc110d8f6e06ac30a937b463ad3508f409c66cc2773b4746dbe153f0c85bc645"
+    },
+    "screenshot": {
+      "name": "adat do chassi.png",
+      "sha256": "b8804dde08fc3b2c3a2acdc5276cb5f9e2770cea4dddc077c8695921e3babd34"
+    }
+  },
+  "capture": {
+    "channels": 2,
+    "sample_width_bytes": 3,
+    "rate": 48000,
+    "frames": 464523,
+    "compression": "NONE"
+  },
+  "reference": {
+    "channels": 2,
+    "sample_width_bytes": 3,
+    "rate": 48000,
+    "frames": 480000,
+    "compression": "NONE"
+  },
+  "alignment_applied_frames": 0,
+  "compared_stereo_frames": 464523,
+  "compared_pcm_samples": 929046,
+  "mismatched_pcm_bytes": 0,
+  "capture_pcm_matches_reference_prefix": true,
+  "omitted_reference_frames": 15477,
+  "omitted_reference_tail_all_zero": true,
+  "linux_adat_pass": false,
+  "power_continuity": "User reports 192 remained powered from Windows to Linux",
+  "screenshot_observations": {
+    "clock": "Internal",
+    "sample_rate": "48 kHz",
+    "digital_format": "AES/EBU",
+    "logical_inputs_9_16": "Optical 1-8 (ADAT)",
+    "logical_outputs_9_16": "Optical 1-8",
+    "external_clock_output": "Word Clock (48 kHz)"
+  },
+  "limitations": [
+    "Exported PCM comparison is not independent observation of physical wiring or source selection.",
+    "Zero alignment shift in an edited/exported clip is not a hardware latency measurement.",
+    "Does not validate Linux optical initialization, additional optical pairs, or cold boot."
+  ]
+}

@@ -23,8 +23,11 @@ Os dois bancos analógicos retornaram os tons nos oito pares de saída
 selecionados, usando as oito entradas em loopback DB25. Veja o
 [registro dos bancos completos](analog-banks-confirmed.md). A [contraprova entre 1–2 e 3–4](analog-pair-isolation-confirmed.md)
 diferenciou os dois caminhos com seleções cruzadas. A numeração física
-continua vinculada ao cabeamento informado. O digital aguarda ensaio;
-os aplicativos continuam com o módulo duplex estéreo validado.
+continua vinculada ao cabeamento informado. Os oito canais ADAT do gabinete passaram no loopback em Linux, em pares,
+com o estado Windows preservado e duas contraprovas de isolamento.
+Veja o [resultado confirmado](adat-enclosure-confirmed.md). O ADAT do módulo
+DIGITAL I/O e a inicialização digital a frio continuam pendentes. Os aplicativos
+continuam com o módulo duplex estéreo validado.
 
 ## Observação dos LEDs no primeiro banco
 
@@ -211,29 +214,51 @@ são importadas automaticamente. O teste detecta o padrão de frequências e
 a separação temporal entre canais, mas não mede THD, resposta em frequência,
 crosstalk ou precisão de clock.
 
-## ADAT: leitura antes da ativação
+## ADAT: ensaio óptico por pares
 
-O caminho escolhido é o óptico do **módulo DIGITAL I/O**, a 48 kHz. O plano
-é um cabo óptico OUT → IN desse mesmo módulo. Isso permite testar os oito
-canais sem uma segunda interface ou clock externo, depois de confirmar a
-seleção ADAT e seu estado. O teste de áudio digital ainda não está habilitado.
+O primeiro ensaio do gabinete, sessão `adat-test-ccAo1q`, não recebeu os
+tons. A 192 foi desligada e religada entre Windows e Linux; somente dois
+frames iniciais têm valores não nulos. Houve zero XRUNs e restauração
+completa, mas nenhum par óptico foi aprovado. A sequência parou na etapa
+1/6. Veja a [análise e próxima comparação](adat-cold-start-review.md).
 
-Com todos os drivers Avid parados, obtenha o estado inicial:
+O ensaio `avid_native_adat` tem perfis separados para o óptico do gabinete
+(`enclosure`, endpoints 25–28) e do módulo DIGITAL I/O (`module`, 17–20).
+Cada perfil liga temporariamente o transporte lógico 1–2 a um par óptico.
+O formato ADAT/S/PDIF/AES, SRC e clock são preservados, sem escrita nos
+controles digitais `0x30..0x32`. Ambos os caminhos aguardam validação Linux.
+
+O usuário confirmou que consegue reproduzir e capturar pelo óptico de
+ambos os conjuntos no Windows; a sessão dos prints foi de configuração.
+Isso é uma referência funcional relatada, não um log de loopback desta etapa.
+
+Primeiro, cabo óptico **OUT → IN nos conectores fixos do gabinete**,
+192 em 48 kHz, clock interno, aplicativos fechados e monitores mutados:
 
 ```sh
-sudo ./linux-research/identify-192 --inspect-digital
+sudo ./linux-research/duplex-driver.sh stop  # se estiver ativo
+sudo ./linux-research/run-adat-bank-test.sh enclosure
 ```
 
-O diagnóstico revisado foi executado: os três candidatos `0x30..0x32`
-retornaram timeout nas duas passagens. Todos os retornos ao comando neutro
-foram confirmados, a 192 continuou identificada e PCI COMMAND foi restaurado.
-Não houve leitura válida desses controles nem WRITE no periférico.
+São quatro pares positivos e duas contraprovas de isolamento, seis etapas
+limitadas a 10 s, com remoção do módulo e restauração entre etapas. O comando
+para na primeira falha. Depois de concluir/remover o módulo e mover o cabo
+para OUT → IN **do módulo DIGITAL I/O**, o outro perfil usa:
 
-A investigação rastreou o bloco usado pelo decodificador Windows até o
-arquivo de preferências **DSIPrefs**. O próximo passo é analisar uma cópia
-desse arquivo, distinguindo estado salvo de estado atual do hardware.
-Não é necessário repetir as consultas já feitas. Veja
-[as evidências e o leitor offline](digital-preferences-findings.md).
+```sh
+sudo ./linux-research/run-adat-bank-test.sh module
+```
+
+Detalhes, comandos de um único par, critérios e limites em
+[ensaio ADAT](adat-route-test.md). Um retorno vazio não identifica defeito:
+o formato atual pode não ser ADAT, e não há inicialização digital nesta versão.
+Nenhum teste publica canais digitais nos aplicativos ainda.
+
+As consultas anteriores `0x30..0x32` falharam seis vezes; não repeti-las.
+O DSIPrefs recebido usa texto K016, não o bloco de 108 bytes inicialmente
+procurado. A fonte salva do módulo (3) corresponde ao print ADAT, mas
+entradas 9–16 na aba Main usam fontes 25–28 do gabinete. Veja a
+[análise das preferências e prints](windows-adat-preferences.md).
 
 ## Evidência técnica para o roteamento
 
@@ -261,3 +286,107 @@ DSI.dll do pacote Pro Tools 2026.4.1, SHA256
 Os binários/disassemblies proprietários não integram o repositório.
 As alterações ficam em `avid_native_channelmap` e no diagnóstico de leitura;
 a implementação duplex validada permanece igual.
+
+
+## Nova captura: retorno alterado, ainda sem aprovação ADAT
+
+A sessão `adat-test-Q0e1ud` trouxe atividade correspondente ao padrão TX,
+mas com amostras alteradas, DC e sete amostras próximas do limite digital.
+Zero XRUNs e restauração completa não tornam esse áudio válido. A análise
+identificou 750/1500 Hz nas janelas isoladas e diferenças de bits frente ao
+gerador C. O usuário esclareceu que na última ida ao Windows apenas
+configurou ADAT; falta a gravação de controle desse loopback no Pro Tools.
+Veja [evidência e procedimento com WAV de referência](adat-corrupted-return.md).
+
+
+## Contraprova Windows recebida: PCM íntegro
+
+O novo `adat_teste.wav`, informado como retorno óptico do gabinete, é
+idêntico à referência em todos os 464523 frames exportados; somente parte
+do silêncio final foi cortada. O print mostra entradas e saídas lógicas
+9–16 em Optical 1–8, clock interno/48 kHz. O usuário manteve a 192 ligada
+na transição para Linux. Veja a [comparação completa e próximo ensaio](windows-adat-loopback-confirmed.md).
+Isso conclui a pendência da gravação de controle Windows; não aprova ainda
+o ADAT Linux nem identifica a etapa que alterou as amostras em Q0e1ud.
+
+
+## Recusa do módulo antes da nova captura
+
+Na sessão `adat-test-phjU44`, após a gravação de controle Windows, o módulo
+recusou o probe com EBUSY (-16), antes de criar o dispositivo ALSA. O PCI
+foi restaurado e a placa ficou desvinculada; não houve nova captura.
+Foi preparado um [snapshot MMIO de transporte](adat-probe-busy.md) para
+localizar pré-condições diferentes sem iniciar DMA nem enviar comandos
+DigiLink. O driver de áudio mantém suas guardas originais.
+
+
+## Endereços DMA residuais identificados
+
+O snapshot posterior mostrou motores desligados, mas bases DMA RX/TX/status
+não nulas e estáveis. Isso aciona a guarda anterior e explica a recusa de
+probe. O ensaio óptico agora possui uma [opção restrita de substituição
+por buffers do Linux](adat-idle-dma-handoff.md), com master desligado,
+transações drenadas e readback dos endereços novos antes de START.
+O duplex validado não foi modificado; ADAT ainda aguarda aprovação física.
+
+
+O ensaio seguinte `adat-test-NF8slx` passou pela guarda de endereços DMA
+residuais, mas recusou o probe com EPROTO (-71), ainda sem captura. A próxima
+comparação é a leitura dos controles/rotas atuais da 192, antes de mudar
+qualquer valor. Detalhes em [substituição de buffers DMA](adat-idle-dma-handoff.md).
+
+
+## Perfil Windows preservado: ensaio pelo transporte 9–10
+
+A nova leitura mostrou controle 1=0x80, controle 0=0 e as rotas ópticas
+Windows preservadas. O par lógico 9–10 já está ligado ao ADAT 1–2 do
+gabinete (0x45=25 e 0x59=5). Foi preparado o modo `--windows-state`,
+que bloqueia todas as escritas de controle à 192 e usa esse par do frame
+DMA. Detalhes e limitações em [perfil Windows](adat-windows-state.md).
+Continua pendente a aprovação física no Linux; o duplex não foi alterado.
+
+
+## Perfil aceito, configuração ALSA ainda pendente
+
+Na sessão `adat-test-xuChRn` o módulo aceitou o perfil Windows e criou a
+placa ALSA, mas o arecord falhou antes de START (last_error=-16, zero
+frames). Foi corrigida a limpeza sem sessão e acrescentada identificação
+da etapa de preparação que recusar. A causa específica dessa execução
+ainda não está comprovada. Veja [análise da preparação ALSA](adat-prepare-review.md).
+
+
+## Correção de offset após E1eorI
+
+O transporte concluiu com zero XRUNs e preservação de controles/rotas,
+mas a captura era inválida. Foi identificado um erro no código do modo
+Windows: canais 9–10 estavam em byte 28; o layout agrupado exige byte 36.
+TX/RX e os testes de fronteira foram corrigidos. Veja [evidência da
+correção](adat-packet-layout-fix.md). A validação física ADAT continua pendente.
+
+
+## ADAT do gabinete 1–2 aprovado: UYG7iv
+
+A execução após a correção para byte 36 retornou o padrão esperado nos
+dois canais a −40 dBFS, sem clipping, XRUNs ou erro de transporte. O
+perfil Windows foi preservado e a restauração PCI concluída. O par 1–2
+do gabinete está confirmado nesse estado; inicialização a frio continua
+pendente. Preparada a sequência dos quatro pares e duas verificações
+de isolamento, sem WRITE à 192. Veja [resultado, limites e comando](adat-enclosure-bank.md).
+
+
+## Banco ADAT interrompido antes de START: RlWCWh
+
+A primeira etapa foi recusada na leitura de rotas com EBUSY: TX=0 e
+RX=0x00800000 no snapshot posterior. Nenhum frame foi transmitido; os
+pares adicionais continuam pendentes. Foi preparada uma espera passiva
+limitada para o mailbox, exigindo duas leituras livres e mantendo todas
+as verificações de perfil. Veja [evidência, limites e próximo teste](adat-mailbox-wait.md).
+
+
+## Banco ADAT do gabinete aprovado: seis etapas completas
+
+As sessões 9g5EmT, fL6CJy, eF0Ulq, Hxc0Md, wuL2sj e P8yZ1z
+confirmaram os quatro pares e as duas contraprovas cruzadas. Todas tiveram
+zero XRUNs, preservação do perfil e restauração PCI; os arquivos de
+isolamento contêm somente zeros. A espera passiva do mailbox permitiu
+concluir a sequência. [Evidências e limites](adat-enclosure-confirmed.md).

@@ -44,3 +44,10 @@ linux-research/reports/channelmap-test-*/
 # Private copies of saved Windows preferences
 DSIPrefs
 linux-research/reports/windows-prefs-*/
+
+# User-supplied Windows preferences and screenshots (analysis inputs)
+/prefs_protools/
+
+# Bounded optical route tests
+linux-research/reports/adat-build.json
+linux-research/reports/adat-test-*/

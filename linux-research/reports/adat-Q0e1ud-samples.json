@@ -1,0 +1,306 @@
+{
+  "scope": "offline sample comparison only; never a hardware pass",
+  "search_offsets_frames": [
+    0,
+    128
+  ],
+  "alignment_score": 906,
+  "alignment_scored_nonzero_samples": 1952,
+  "best_offsets_frames": [
+    16
+  ],
+  "alignment_is_latency_measurement": false,
+  "alignment_status": "unique_best_pattern_fit",
+  "compared_frames": 479984,
+  "channels": [
+    {
+      "channel": 1,
+      "nonzero_reference_samples": 185998,
+      "exact_nonzero_reference_samples": 81040,
+      "unexpected_nonzero_during_reference_silence": 4,
+      "cleared_bits_0_to_23": [
+        33,
+        31,
+        23,
+        51,
+        26,
+        11912,
+        26,
+        5971,
+        34,
+        5981,
+        14408,
+        14881,
+        48,
+        5976,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        92998,
+        0,
+        0,
+        0
+      ],
+      "added_bits_0_to_23": [
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "mismatch_examples": [
+        {
+          "reference_frame": 48029,
+          "captured_frame": 48045,
+          "expected_hex": "0005bf",
+          "captured_hex": "0005be"
+        },
+        {
+          "reference_frame": 48030,
+          "captured_frame": 48046,
+          "expected_hex": "0003fe",
+          "captured_hex": "0003f6"
+        },
+        {
+          "reference_frame": 48033,
+          "captured_frame": 48049,
+          "expected_hex": "fffdcb",
+          "captured_hex": "effd8b"
+        },
+        {
+          "reference_frame": 48034,
+          "captured_frame": 48050,
+          "expected_hex": "fffb79",
+          "captured_hex": "effb69"
+        },
+        {
+          "reference_frame": 48035,
+          "captured_frame": 48051,
+          "expected_hex": "fff911",
+          "captured_hex": "eff911"
+        },
+        {
+          "reference_frame": 48036,
+          "captured_frame": 48052,
+          "expected_hex": "fff699",
+          "captured_hex": "eff699"
+        },
+        {
+          "reference_frame": 48037,
+          "captured_frame": 48053,
+          "expected_hex": "fff418",
+          "captured_hex": "eff418"
+        },
+        {
+          "reference_frame": 48038,
+          "captured_frame": 48054,
+          "expected_hex": "fff197",
+          "captured_hex": "eff197"
+        }
+      ],
+      "windows": [
+        {
+          "reference_seconds": [
+            1.2,
+            2.8
+          ],
+          "nonzero_samples": 74400,
+          "dominant_ac_hz": 750.0,
+          "mean_pcm": -508414.6666666667,
+          "exact_samples": 34800,
+          "samples": 76800
+        },
+        {
+          "reference_seconds": [
+            4.2,
+            5.8
+          ],
+          "nonzero_samples": 0,
+          "dominant_ac_hz": null,
+          "mean_pcm": 0.0,
+          "exact_samples": 76800,
+          "samples": 76800
+        },
+        {
+          "reference_seconds": [
+            7.2,
+            8.8
+          ],
+          "nonzero_samples": 74400,
+          "dominant_ac_hz": 750.0,
+          "mean_pcm": -508422.9066666667,
+          "exact_samples": 34800,
+          "samples": 76800
+        }
+      ]
+    },
+    {
+      "channel": 2,
+      "nonzero_reference_samples": 179998,
+      "exact_nonzero_reference_samples": 79553,
+      "unexpected_nonzero_during_reference_silence": 4,
+      "cleared_bits_0_to_23": [
+        26,
+        22,
+        27,
+        26,
+        42,
+        28,
+        26,
+        11918,
+        26,
+        11930,
+        4731,
+        17853,
+        38,
+        11922,
+        0,
+        0,
+        0,
+        0,
+        52520,
+        8995,
+        14956,
+        8983,
+        3016,
+        5972
+      ],
+      "added_bits_0_to_23": [
+        0,
+        2,
+        0,
+        2,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        2,
+        2,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        2,
+        2,
+        0,
+        0,
+        0,
+        2
+      ],
+      "mismatch_examples": [
+        {
+          "reference_frame": 192015,
+          "captured_frame": 192031,
+          "expected_hex": "0001ff",
+          "captured_hex": "0001fb"
+        },
+        {
+          "reference_frame": 192017,
+          "captured_frame": 192033,
+          "expected_hex": "fffdbd",
+          "captured_hex": "fbfdb5"
+        },
+        {
+          "reference_frame": 192018,
+          "captured_frame": 192034,
+          "expected_hex": "fffb4d",
+          "captured_hex": "fbfb4d"
+        },
+        {
+          "reference_frame": 192019,
+          "captured_frame": 192035,
+          "expected_hex": "fff8cc",
+          "captured_hex": "fbf8cc"
+        },
+        {
+          "reference_frame": 192020,
+          "captured_frame": 192036,
+          "expected_hex": "fff659",
+          "captured_hex": "fbf659"
+        },
+        {
+          "reference_frame": 192021,
+          "captured_frame": 192037,
+          "expected_hex": "fff415",
+          "captured_hex": "fbf415"
+        },
+        {
+          "reference_frame": 192022,
+          "captured_frame": 192038,
+          "expected_hex": "fff220",
+          "captured_hex": "fbf220"
+        },
+        {
+          "reference_frame": 192023,
+          "captured_frame": 192039,
+          "expected_hex": "fff09a",
+          "captured_hex": "fbf09a"
+        }
+      ],
+      "windows": [
+        {
+          "reference_seconds": [
+            1.2,
+            2.8
+          ],
+          "nonzero_samples": 0,
+          "dominant_ac_hz": null,
+          "mean_pcm": 0.0,
+          "exact_samples": 76800,
+          "samples": 76800
+        },
+        {
+          "reference_seconds": [
+            4.2,
+            5.8
+          ],
+          "nonzero_samples": 72000,
+          "dominant_ac_hz": 1500.0,
+          "mean_pcm": -123646.0,
+          "exact_samples": 36000,
+          "samples": 76800
+        },
+        {
+          "reference_seconds": [
+            7.2,
+            8.8
+          ],
+          "nonzero_samples": 72000,
+          "dominant_ac_hz": 10500.0,
+          "mean_pcm": -37613.013333333336,
+          "exact_samples": 37200,
+          "samples": 76800
+        }
+      ]
+    }
+  ],
+  "raw_sha256": "1e8afe7668ed09d576ff72875b10d6fd0f5cdc98538dab6c3336d3b5ac861b22",
+  "reference_header_sha256": "c13fc99ab1dbdac2baf28c41a9351ab48033c88d98c24ab993d8a67d990db47f",
+  "reference": "native_capture_ring pattern: 10s, stereo 750/1500Hz, -40dBFS, 10ms ramps"
+}

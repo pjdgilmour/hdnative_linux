@@ -1,0 +1,144 @@
+{
+  "optical_path": "enclosure",
+  "rate": 48000,
+  "format": "S24_3LE",
+  "physical_channels_tested_in_pairs": 8,
+  "windows_state_required": true,
+  "simultaneous_eight_channels_tested": false,
+  "cold_start_validated": false,
+  "module_optical_validated": false,
+  "sessions": [
+    {
+      "input_pair": 1,
+      "output_pair": 1,
+      "expectation": "loopback",
+      "transport_channels": [
+        9,
+        10
+      ],
+      "output_transport_channels": [
+        9,
+        10
+      ],
+      "module_sha256": "284e6b3cf247e887ea7d9ebfb683283afe52af0cb78e0123fa2486c29a37034f",
+      "session": "9g5EmT",
+      "sha256": "188cc270af7138e2d2f3a3d6959140602c6cf8cc7f44dfebfae7cf6ffbda7933",
+      "waits": 306,
+      "max_poll_us": 1612,
+      "peaks": [
+        -40.0,
+        -40.0
+      ]
+    },
+    {
+      "input_pair": 1,
+      "output_pair": 2,
+      "expectation": "isolation",
+      "transport_channels": [
+        9,
+        10
+      ],
+      "output_transport_channels": [
+        11,
+        12
+      ],
+      "module_sha256": "284e6b3cf247e887ea7d9ebfb683283afe52af0cb78e0123fa2486c29a37034f",
+      "session": "fL6CJy",
+      "sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "waits": 308,
+      "max_poll_us": 1614,
+      "peaks": [
+        null,
+        null
+      ]
+    },
+    {
+      "input_pair": 2,
+      "output_pair": 1,
+      "expectation": "isolation",
+      "transport_channels": [
+        11,
+        12
+      ],
+      "output_transport_channels": [
+        9,
+        10
+      ],
+      "module_sha256": "284e6b3cf247e887ea7d9ebfb683283afe52af0cb78e0123fa2486c29a37034f",
+      "session": "eF0Ulq",
+      "sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "waits": 306,
+      "max_poll_us": 1734,
+      "peaks": [
+        null,
+        null
+      ]
+    },
+    {
+      "input_pair": 2,
+      "output_pair": 2,
+      "expectation": "loopback",
+      "transport_channels": [
+        11,
+        12
+      ],
+      "output_transport_channels": [
+        11,
+        12
+      ],
+      "module_sha256": "284e6b3cf247e887ea7d9ebfb683283afe52af0cb78e0123fa2486c29a37034f",
+      "session": "Hxc0Md",
+      "sha256": "188cc270af7138e2d2f3a3d6959140602c6cf8cc7f44dfebfae7cf6ffbda7933",
+      "waits": 306,
+      "max_poll_us": 1606,
+      "peaks": [
+        -40.0,
+        -40.0
+      ]
+    },
+    {
+      "input_pair": 3,
+      "output_pair": 3,
+      "expectation": "loopback",
+      "transport_channels": [
+        13,
+        14
+      ],
+      "output_transport_channels": [
+        13,
+        14
+      ],
+      "module_sha256": "284e6b3cf247e887ea7d9ebfb683283afe52af0cb78e0123fa2486c29a37034f",
+      "session": "wuL2sj",
+      "sha256": "188cc270af7138e2d2f3a3d6959140602c6cf8cc7f44dfebfae7cf6ffbda7933",
+      "waits": 304,
+      "max_poll_us": 1606,
+      "peaks": [
+        -40.0,
+        -40.0
+      ]
+    },
+    {
+      "input_pair": 4,
+      "output_pair": 4,
+      "expectation": "loopback",
+      "transport_channels": [
+        15,
+        16
+      ],
+      "output_transport_channels": [
+        15,
+        16
+      ],
+      "module_sha256": "284e6b3cf247e887ea7d9ebfb683283afe52af0cb78e0123fa2486c29a37034f",
+      "session": "P8yZ1z",
+      "sha256": "188cc270af7138e2d2f3a3d6959140602c6cf8cc7f44dfebfae7cf6ffbda7933",
+      "waits": 307,
+      "max_poll_us": 1609,
+      "peaks": [
+        -40.0,
+        -40.0
+      ]
+    }
+  ]
+}

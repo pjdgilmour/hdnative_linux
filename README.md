@@ -87,8 +87,10 @@ Os dois bancos passaram nos [testes físicos por pares](linux-research/reports/a
 confirmada. A [contraprova de 1–2 e 3–4](linux-research/reports/analog-pair-isolation-confirmed.md)
 também diferenciou seus caminhos com seleções cruzadas. A identificação dos
 conectores depende do cabeamento informado; operação multicanal simultânea
-nos aplicativos ainda não foi implementada. ADAT aguarda o ensaio digital;
-há um diagnóstico de leitura, sem ativação de áudio digital.
+nos aplicativos ainda não foi implementada. Os [oito canais ADAT do gabinete](linux-research/reports/adat-enclosure-confirmed.md)
+passaram no Linux em quatro pares, com duas contraprovas de isolamento,
+zero XRUNs e estado Windows preservado. A inicialização digital a frio,
+o ADAT do módulo DIGITAL I/O e os oito canais simultâneos continuam pendentes.
 
 ```sh
 ./linux-research/build-channelmap.sh

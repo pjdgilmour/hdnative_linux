@@ -61,10 +61,11 @@ chaves, tamanhos e hashes. Só considera candidatos os registros de 108
 bytes, exibindo os três bytes em offset 0x1f (0x0f + 8*2), usados pelo
 módulo de índice 2 no decodificador já rastreado. Tamanho não identifica
 uma 192: os campos de identidade e estado atual permanecem explicitamente
-não verificados. O formato ainda precisa ser confrontado com um DSIPrefs
-real. Testes sintéticos passaram; nada é escrito na interface.
+não verificados. O formato externo foi confrontado com um DSIPrefs real
+em 2026-09-21; nessa cópia não há bloco de 108 bytes. O leitor foi estendido
+para o registro textual K016 encontrado. Veja a análise atual abaixo.
 
-## Acesso pendente
+## Tentativa anterior de acesso
 
 `lsblk` identificou uma partição NTFS com label Windows em `/dev/sde3`,
 sem ponto de montagem. A tentativa via udisks com opção `ro` não foi
@@ -75,3 +76,12 @@ leitura de preferências nem reinicialização automática.
 Os controles digitais continuam sem escrita até obter evidência suficiente
 sobre a configuração e a sequência de seleção. A validação analógica e os
 módulos de áudio permanecem preservados.
+
+## Cópia recebida em 2026-09-21
+
+O usuário trouxe `prefs_protools/DSIPrefs` e quatro prints. Não é mais
+necessário montar o Windows para obter essa cópia. Nove registros foram
+lidos sem resíduos; o registro K016 contém configuração em texto de 1024
+bytes. A seleção salva do módulo digital corresponde ao print com ADAT,
+mas o roteamento de entrada aponta ao outro caminho óptico. Detalhes,
+RVAs, hashes e limites em [Preferências Windows e ADAT](windows-adat-preferences.md).

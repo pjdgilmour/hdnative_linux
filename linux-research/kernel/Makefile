@@ -12,3 +12,5 @@ obj-m += avid_native_capture.o
 obj-m += avid_native_duplex.o
 
 obj-m += avid_native_channelmap.o
+
+obj-m += avid_native_adat.o

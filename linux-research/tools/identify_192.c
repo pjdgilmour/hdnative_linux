@@ -39,6 +39,7 @@ static void dl_pause(void) {
 }
 static int dl_cancelled(void) { return stop_requested != 0; }
 #include "digilink_query.h"
+#include "native_transport_snapshot.h"
 static int config_fd = -1;
 static uint16_t original_command;
 static volatile sig_atomic_t restore_needed;
@@ -87,12 +88,13 @@ int main(int argc, char **argv)
     void *mapping = MAP_FAILED;
 
     if (argc != 2 && argc != 3) {
-        fprintf(stderr, "Usage: %s --identify-192|--inspect-192|--inspect-routing|--inspect-digital [0000:81:00.0]\n", argv[0]);
+        fprintf(stderr, "Usage: %s --identify-192|--inspect-192|--inspect-routing|--inspect-digital|--inspect-transport [0000:81:00.0]\n", argv[0]);
         return 2;
     }
+    const int transport = strcmp(argv[1], "--inspect-transport") == 0;
     const int digital = strcmp(argv[1], "--inspect-digital") == 0;
     const int routing = strcmp(argv[1], "--inspect-routing") == 0;
-    const int diagnostics = digital || routing || strcmp(argv[1], "--inspect-192") == 0;
+    const int diagnostics = transport || digital || routing || strcmp(argv[1], "--inspect-192") == 0;
     if (!diagnostics && strcmp(argv[1], "--identify-192") != 0) return 2;
     if (argc == 3) bdf = argv[2];
     if (sscanf(bdf, "%x:%x:%x.%x", &domain, &bus, &slot, &function) != 4 ||
@@ -161,6 +163,15 @@ int main(int argc, char **argv)
     rc = 3;
     if (identity != 0xd400 || version != 0x01050040) {
         fprintf(stderr, "Refusing: not the hardware/firmware observed in the first experiment.\n");
+        goto done;
+    }
+    if (transport) {
+        /* Read-only BAR snapshot; never enters the DigiLink query path.
+         * Keep all PCI identity/ownership/bus-master guards above intact. */
+        (void)native_transport_snapshot();
+        puts("TRANSPORT_SNAPSHOT_COMPLETE=yes");
+        puts("No BAR write, DigiLink query, peripheral WRITE, DMA start or reset was performed.");
+        rc = stop_requested ? 128 + stop_requested : 0;
         goto done;
     }
     const unsigned status_offsets[] = {0x10, 0x20, 0x44, 0x70000, 0x70004};
