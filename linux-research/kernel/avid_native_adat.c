@@ -16,7 +16,15 @@
 #include <sound/pcm.h>
 #include <sound/pcm_params.h>
 #include "native_192_adat_control.h"
+static bool sync_profile;
+module_param(sync_profile, bool, 0400);
+MODULE_PARM_DESC(sync_profile, "Bounded control1 master-bit test at exact muted 48 kHz baseline, module pair1 only");
+static bool sync_restored;
+module_param(sync_restored, bool, 0444);
 static bool windows_state;
+static bool module_route;
+module_param(module_route, bool, 0400);
+MODULE_PARM_DESC(module_route, "Temporary module routes from the exact observed warm profile; format and clock unchanged");
 static unsigned int input_pair = 1, output_pair = 1;
 #define NC_RX_OFFSET NC_CHANNEL_OFFSET(windows_state ? 6U + 2U * input_pair : 0U)
 #define NC_TX_OFFSET NC_CHANNEL_OFFSET(windows_state ? 6U + 2U * output_pair : 0U)
@@ -209,7 +217,8 @@ static void init_peripheral(struct native_alsa *e)
         .before = -1, .during = -1, .after = -1, .route_enabled = 1,
         .route_before = -1, .route_during = -1, .route_after = -1,
         .input_pair = input_pair, .output_pair = output_pair,
-        .optical_path = optical_path, .windows_state = windows_state,
+        .sync_profile = sync_profile, .sync_before = -1, .sync_during = -1, .sync_after = -1,
+        .optical_path = optical_path, .windows_state = windows_state, .module_route = module_route,
     };
 }
 
@@ -276,10 +285,10 @@ static int verify_dma_buffers(struct native_alsa *e)
 /* io_lock held. Safe for repeated STOP, hw_free, close and remove. */
 static int finish_session(struct native_alsa *e)
 {
-    int i, mute_err, route_err, err = 0;
+    int i, mute_err, route_err, sync_err, err = 0;
     bool drained = true;
     bool had_session = e->running || e->configured || e->peripheral.write_attempted ||
-                       e->peripheral.route_write_attempted;
+                       e->peripheral.route_write_attempted || e->peripheral.sync_write_attempted;
     if (e->running)
         stops++;
     e->running = false;
@@ -290,15 +299,16 @@ static int finish_session(struct native_alsa *e)
      * Do not issue DigiLink transactions when there is nothing to clean.
      * Pending cleanup and quarantined DMA must never bypass this path. */
     if (!had_session && !e->peripheral.restore_required &&
-        !e->peripheral.route_restore_required)
+        !e->peripheral.route_restore_required && !e->peripheral.sync_restore_required)
         return 0;
     if (e->configured)
         drained = stop_dma(e);
     mute_err = n192_restore(&e->peripheral);
     route_err = n192_route_restore(&e->peripheral);
-    if (mute_err || route_err) {
+    sync_err = n192_sync_restore(&e->peripheral);
+    if (mute_err || route_err || sync_err) {
         e->faulted = true; /* Refuse automatic retries after cleanup failure. */
-        err = mute_err ? mute_err : route_err;
+        err = mute_err ? mute_err : route_err ? route_err : sync_err;
     }
     if (!drained) {
         /* Do not release memory while the device may still access it. */
@@ -317,6 +327,11 @@ static int finish_session(struct native_alsa *e)
     if (had_session) {
         mute_restored = !e->peripheral.restore_required && !mute_err;
         route_restored = !e->peripheral.route_restore_required && !route_err;
+        sync_restored = !e->peripheral.sync_restore_required && !sync_err;
+        if (sync_profile)
+            dev_info(&e->pdev->dev, "control1 experiment: before=%d during=%d after=%d attempted=%d restored=%u error=%d\n",
+                     e->peripheral.sync_before, e->peripheral.sync_during, e->peripheral.sync_after,
+                     e->peripheral.sync_write_attempted, sync_restored, sync_err);
         last_frames = e->ring.produced;
         dev_info(&e->pdev->dev,
                  "stop: taken=%llu produced=%llu hw=%u mute=%d route=%d restored=%u/%u error=%d\n",
@@ -414,6 +429,7 @@ static int native_prepare(struct snd_pcm_substream *ss)
     for (i = 0; i < ARRAY_SIZE(saved_offsets); i++)
         e->saved[i] = rd(e, saved_offsets[i]);
     init_peripheral(e);
+    sync_restored = !sync_profile;
     mute_restored = route_restored = false;
     stage = "peripheral-route-check";
     err = n192_route_enable(&e->peripheral);
@@ -441,12 +457,20 @@ static int native_prepare(struct snd_pcm_substream *ss)
     if (e->peripheral.idle_waits)
         dev_info(&e->pdev->dev, "DigiLink idle waits=%u; mailbox settled before proceeding\n",
                  e->peripheral.idle_waits);
-    if (windows_state)
+    if (sync_profile)
+        dev_info(&e->pdev->dev, "control1 experiment active: 00 -> 80 -> 00; 48 kHz internal, master bit; module format/SRC untouched\n");
+    if (windows_state && !module_route)
         dev_info(&e->pdev->dev, "Windows state preserved: RX logical %u-%u byte %u route%02x=%u; TX logical %u-%u byte %u route%02x=%u; control0=0 control1=80; no peripheral writes\n",
                  7 + 2 * input_pair, 8 + 2 * input_pair, NC_RX_OFFSET,
                  0x44 + input_pair, 24 + input_pair,
                  7 + 2 * output_pair, 8 + 2 * output_pair, NC_TX_OFFSET,
                  0x58 + output_pair, 4 + output_pair);
+    if (module_route)
+        dev_info(&e->pdev->dev, "module route test: RX logical %u-%u byte %u route%02x=%u; TX logical %u-%u byte %u route%02x=%u; two routes changed temporarily, format retained\n",
+                 7 + 2 * input_pair, 8 + 2 * input_pair, NC_RX_OFFSET,
+                 0x44 + input_pair, 16 + input_pair,
+                 7 + 2 * output_pair, 8 + 2 * output_pair, NC_TX_OFFSET,
+                 0x50 + output_pair, 4 + output_pair);
     dev_info(&e->pdev->dev, "prepared: stereo S24_3LE 48000 Hz buffer=4096 period=1024; input_pair=%u output_pair=%u optical_path=%u windows_state=%u control0=0; format retained, lock unverified\n",
              input_pair, output_pair, optical_path, windows_state);
     goto out;
@@ -778,7 +802,11 @@ static int __init native_init(void)
         input_pair < 1 || input_pair > 4 || output_pair < 1 || output_pair > 4 ||
         (optical_path != 1 && optical_path != 2))
         return -EINVAL;
-    if (windows_state && (optical_path != 1 || !allow_idle_dma))
+    if (sync_profile && (allow_idle_dma || !loopback || windows_state || module_route || optical_path != 2 || input_pair != 1 || output_pair != 1))
+        return -EINVAL;
+    if (module_route && !windows_state)
+        return -EINVAL;
+    if (windows_state && (optical_path != (module_route ? 2U : 1U) || !allow_idle_dma))
         return -EINVAL;
     pr_info(DRV ": begin bounded capture test\n");
     err = pci_register_driver(&native_driver);

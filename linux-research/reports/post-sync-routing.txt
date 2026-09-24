@@ -1,0 +1,47 @@
+device=0000:81:00.0
+BAR0+0x00=0x0000d400
+BAR0+0x04=0x01050040
+status[0x00010]=0x00000a00
+status[0x00020]=0x00000000
+status[0x00044]=0x00000000
+status[0x70000]=0x00000000
+status[0x70004]=0x9e180101
+slot=0 tx=0x00000000 rx=0x00000000
+slot=1 tx=0x00000000 rx=0x00ffffff
+slot=2 tx=0x00000000 rx=0x00000000
+slot=3 tx=0x00000000 rx=0x00000000
+slot=4 tx=0x00000000 rx=0x00000000
+slot=5 tx=0x00000000 rx=0x00000000
+slot=6 tx=0x00000000 rx=0x00000000
+slot=7 tx=0x00000000 rx=0x00000000
+DIGILINK_READY=yes; attempting bounded identification queries.
+slot=0 reg=0x10 result=0 response=0x011001 value=0x01 cleanup=0
+slot=0 reg=0x14 result=0 response=0x011414 value=0x14 cleanup=0
+slot=0 reg=0x15 result=0 response=0x011513 value=0x13 cleanup=0
+slot=0 reg=0x16 result=0 response=0x011615 value=0x15 cleanup=0
+slot=0 reg=0x17 result=0 response=0x011713 value=0x13 cleanup=0
+slot=0 Django_modules=0x13151314 DSI_model=16
+slot=0 model=192 I/O
+Control readback support is unverified; ACK/zero values alone do not prove register contents.
+diagnostic pass=0 slot=0 bank=1 reg=0x11 result=0 response=0x011149 value=0x49 cleanup=0
+diagnostic pass=0 slot=0 bank=1 reg=0x12 result=0 response=0x011201 value=0x01 cleanup=0
+diagnostic pass=0 slot=0 bank=1 reg=0x13 result=0 response=0x011301 value=0x01 cleanup=0
+diagnostic pass=0 slot=0 bank=1 reg=0x00 result=0 response=0x010002 value=0x02 cleanup=0
+diagnostic pass=0 slot=0 bank=1 reg=0x01 result=0 response=0x010100 value=0x00 cleanup=0
+diagnostic pass=0 slot=0 bank=1 reg=0x02 result=0 response=0x010200 value=0x00 cleanup=0
+diagnostic pass=0 slot=0 bank=1 reg=0x03 result=0 response=0x010300 value=0x00 cleanup=0
+diagnostic pass=1 slot=0 bank=1 reg=0x11 result=0 response=0x011149 value=0x49 cleanup=0
+diagnostic pass=1 slot=0 bank=1 reg=0x12 result=0 response=0x011201 value=0x01 cleanup=0
+diagnostic pass=1 slot=0 bank=1 reg=0x13 result=0 response=0x011301 value=0x01 cleanup=0
+diagnostic pass=1 slot=0 bank=1 reg=0x00 result=0 response=0x010002 value=0x02 cleanup=0
+diagnostic pass=1 slot=0 bank=1 reg=0x01 result=0 response=0x010100 value=0x00 cleanup=0
+diagnostic pass=1 slot=0 bank=1 reg=0x02 result=0 response=0x010200 value=0x00 cleanup=0
+diagnostic pass=1 slot=0 bank=1 reg=0x03 result=0 response=0x010300 value=0x00 cleanup=0
+Routing readback support remains provisional; this mode sends no peripheral WRITE commands.
+routing pass=0 values[0x40..0x5d]=00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+routing pass=1 values[0x40..0x5d]=00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ROUTING_READS_STABLE=yes
+No peripheral WRITE command was sent; no mute or routing value was changed by this tool.
+192_IDENTIFIED=yes count=1
+No reset, clock setup, DMA, audio or firmware update was performed.
+PCI_COMMAND_RESTORED=yes

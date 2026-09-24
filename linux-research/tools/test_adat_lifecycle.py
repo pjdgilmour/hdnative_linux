@@ -19,12 +19,13 @@ prefix = r'''
 #define dev_err(...) do {} while (0)
 static unsigned stops;
 static int last_error;
-static bool mute_restored, route_restored;
+static bool mute_restored, route_restored, sync_restored, sync_profile;
 static unsigned long long last_frames;
 static const unsigned saved_offsets[] = {0x10,0x20,0x42004};
 struct native_192 {
     int write_attempted, route_write_attempted, restore_required, route_restore_required;
     int after, route_after;
+    int sync_write_attempted, sync_restore_required;
 };
 struct native_alsa {
     bool running, prepared, configured, quarantined, faulted;
@@ -33,7 +34,7 @@ struct native_alsa {
     unsigned saved[3];
     void *pdev;
 };
-static int drain_ok, mute_error, route_error, pins, refs, resets, writes;
+static int drain_ok, mute_error, route_error, sync_error, pins, refs, resets, writes;
 static char events[100];
 static void event(char c) { size_t n=strlen(events); events[n]=c; events[n+1]=0; }
 static bool stop_dma(struct native_alsa *e) { (void)e; event('D'); return drain_ok; }
@@ -42,6 +43,9 @@ static int n192_restore(struct native_192 *p) {
 }
 static int n192_route_restore(struct native_192 *p) {
     event('R'); if (!route_error) p->route_restore_required=0; return route_error;
+}
+static int n192_sync_restore(struct native_192 *p) {
+    event('S'); if (!sync_error) p->sync_restore_required=0; return sync_error;
 }
 static void __module_get(int x) { (void)x; pins++; }
 static void pci_dev_get(void *x) { (void)x; refs++; }
@@ -54,7 +58,7 @@ static struct native_alsa fresh(void) {
     struct native_alsa e={.running=true,.prepared=true,.configured=true,
         .peripheral={.write_attempted=1,.route_write_attempted=1,.restore_required=1,.route_restore_required=1},
         .ring={.produced=12000,.taken=15000,.hw=3808},.saved={10,20,30}};
-    stops=0; last_error=0; drain_ok=1; mute_error=route_error=0;
+    stops=0; last_error=0; drain_ok=1; mute_error=route_error=sync_error=0;
     pins=refs=resets=writes=0; events[0]=0; mute_restored=route_restored=false;
     return e;
 }
@@ -63,16 +67,16 @@ suffix = r'''
 int main(void) {
     struct native_alsa e=fresh();
     assert(finish_session(&e)==0);
-    assert(!strcmp(events,"DMRF"));
+    assert(!strcmp(events,"DMRSF"));
     assert(!e.running && !e.prepared && !e.configured && !e.faulted);
     assert(stops==1 && writes==3 && resets==1 && last_frames==12000);
     assert(mute_restored && route_restored && !pins && !refs);
     assert(finish_session(&e)==0); /* STOP -> hw_free -> close must be harmless. */
-    assert(stops==1 && writes==3 && resets==1 && !strcmp(events,"DMRF"));
+    assert(stops==1 && writes==3 && resets==1 && !strcmp(events,"DMRSF"));
     puts("PASS: successful cleanup, reverse MMIO restore, repeated close");
     e=fresh(); mute_error=-ETIMEDOUT;
     assert(finish_session(&e)==-ETIMEDOUT);
-    assert(!strcmp(events,"DMRF")); /* Route cleanup still attempted. */
+    assert(!strcmp(events,"DMRSF")); /* Route cleanup still attempted. */
     assert(e.faulted && !e.configured && !resets && !mute_restored && route_restored);
     assert(last_error==-ETIMEDOUT);
     puts("PASS: lost mute ACK cannot skip route cleanup or clear failure");
@@ -82,15 +86,15 @@ int main(void) {
     puts("PASS: failed routing restoration prevents a fresh session");
     e=fresh(); drain_ok=0;
     assert(finish_session(&e)==-EBUSY);
-    assert(!strcmp(events,"DMR"));
+    assert(!strcmp(events,"DMRS"));
     assert(e.quarantined && e.faulted && e.configured);
     assert(pins==1 && refs==1 && !writes && mute_restored && route_restored);
     assert(finish_session(&e)==-EBUSY);
-    assert(pins==1 && refs==1 && !writes && !strcmp(events,"DMR"));
+    assert(pins==1 && refs==1 && !writes && !strcmp(events,"DMRS"));
     puts("PASS: failed PCI drain pins memory owner/module once, does not restore DMA addresses");
     e=fresh(); e.running=false; e.configured=false; e.prepared=false;
     assert(finish_session(&e)==0); /* Route/mute failed before setup_dma. */
-    assert(!strcmp(events,"MR") && !writes && stops==0 && resets==1);
+    assert(!strcmp(events,"MRS") && !writes && stops==0 && resets==1);
     puts("PASS: partial prepare cleans the peripheral without touching DMA");
     e=fresh(); e.running=false; e.configured=false; e.prepared=false;
     memset(&e.peripheral,0,sizeof(e.peripheral));
@@ -101,11 +105,19 @@ int main(void) {
     assert(!mute_restored && !route_restored);
     e.peripheral.restore_required=1;
     assert(finish_session(&e)==-EBUSY);
-    assert(!strcmp(events,"MR") && e.faulted);
+    assert(!strcmp(events,"MRS") && e.faulted);
     e=fresh(); e.running=false; e.configured=false; e.quarantined=true;
     memset(&e.peripheral,0,sizeof(e.peripheral));
     assert(finish_session(&e)==-EBUSY && !events[0]);
     puts("PASS: cleanup before prepare does no I/O; repeated close no-op; pending cleanup/quarantine enforced");
+    e=fresh(); e.peripheral.sync_write_attempted=1; e.peripheral.sync_restore_required=1;
+    sync_error=-ETIMEDOUT;
+    assert(finish_session(&e)==-ETIMEDOUT && e.faulted && !resets && !sync_restored);
+    assert(e.peripheral.sync_restore_required && !strcmp(events,"DMRSF"));
+    e=fresh(); e.running=e.configured=false; memset(&e.peripheral,0,sizeof(e.peripheral));
+    e.peripheral.sync_write_attempted=1; e.peripheral.sync_restore_required=1;
+    assert(!finish_session(&e) && sync_restored && resets==1 && !strcmp(events,"MRS"));
+    puts("PASS: sync-only partial preparation is cleaned; sync rollback failure retained");
     return 0;
 }
 '''

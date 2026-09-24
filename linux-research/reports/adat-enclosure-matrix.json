@@ -1,0 +1,146 @@
+{
+  "matrix_passed": true,
+  "rate": 48000,
+  "format": "S24_3LE",
+  "frames_per_session": 480000,
+  "windows_state": true,
+  "optical_path": "enclosure",
+  "module_sha256": "284e6b3cf247e887ea7d9ebfb683283afe52af0cb78e0123fa2486c29a37034f",
+  "ring_header_sha256": "88851b931ed212b5187701c312c394833586128f0e736b858d28969353a973b9",
+  "reference_sha256": "71dca18c49a85fde23b19d2cf6d0de972b2813cced5168d655c933aa3fa1ef28",
+  "scope": "pairs sequentially; exact comparison only on aligned overlap, no gain adjustment",
+  "sessions": [
+    {
+      "session": "adat-test-CHZQma",
+      "output_pair": 1,
+      "input_pair": 1,
+      "raw_sha256": "188cc270af7138e2d2f3a3d6959140602c6cf8cc7f44dfebfae7cf6ffbda7933",
+      "max_poll_us": 1615,
+      "alignment_frames": 16,
+      "exact_compared_frames": 479984
+    },
+    {
+      "session": "adat-test-jbOgmc",
+      "output_pair": 1,
+      "input_pair": 2,
+      "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "max_poll_us": 1601,
+      "all_samples_zero": true
+    },
+    {
+      "session": "adat-test-iT7rUh",
+      "output_pair": 1,
+      "input_pair": 3,
+      "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "max_poll_us": 1631,
+      "all_samples_zero": true
+    },
+    {
+      "session": "adat-test-RrFa0s",
+      "output_pair": 1,
+      "input_pair": 4,
+      "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "max_poll_us": 1611,
+      "all_samples_zero": true
+    },
+    {
+      "session": "adat-test-DpgUbe",
+      "output_pair": 2,
+      "input_pair": 2,
+      "raw_sha256": "188cc270af7138e2d2f3a3d6959140602c6cf8cc7f44dfebfae7cf6ffbda7933",
+      "max_poll_us": 1626,
+      "alignment_frames": 16,
+      "exact_compared_frames": 479984
+    },
+    {
+      "session": "adat-test-HoPTFb",
+      "output_pair": 2,
+      "input_pair": 1,
+      "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "max_poll_us": 1662,
+      "all_samples_zero": true
+    },
+    {
+      "session": "adat-test-UQmDc2",
+      "output_pair": 2,
+      "input_pair": 3,
+      "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "max_poll_us": 1598,
+      "all_samples_zero": true
+    },
+    {
+      "session": "adat-test-BOoPJa",
+      "output_pair": 2,
+      "input_pair": 4,
+      "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "max_poll_us": 1598,
+      "all_samples_zero": true
+    },
+    {
+      "session": "adat-test-Os8EWw",
+      "output_pair": 3,
+      "input_pair": 3,
+      "raw_sha256": "188cc270af7138e2d2f3a3d6959140602c6cf8cc7f44dfebfae7cf6ffbda7933",
+      "max_poll_us": 1634,
+      "alignment_frames": 16,
+      "exact_compared_frames": 479984
+    },
+    {
+      "session": "adat-test-fN8NdT",
+      "output_pair": 3,
+      "input_pair": 1,
+      "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "max_poll_us": 1618,
+      "all_samples_zero": true
+    },
+    {
+      "session": "adat-test-lmcBRc",
+      "output_pair": 3,
+      "input_pair": 2,
+      "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "max_poll_us": 1606,
+      "all_samples_zero": true
+    },
+    {
+      "session": "adat-test-7Rnuj8",
+      "output_pair": 3,
+      "input_pair": 4,
+      "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "max_poll_us": 1794,
+      "all_samples_zero": true
+    },
+    {
+      "session": "adat-test-suQdK7",
+      "output_pair": 4,
+      "input_pair": 4,
+      "raw_sha256": "188cc270af7138e2d2f3a3d6959140602c6cf8cc7f44dfebfae7cf6ffbda7933",
+      "max_poll_us": 1603,
+      "alignment_frames": 16,
+      "exact_compared_frames": 479984
+    },
+    {
+      "session": "adat-test-INPrpk",
+      "output_pair": 4,
+      "input_pair": 1,
+      "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "max_poll_us": 1593,
+      "all_samples_zero": true
+    },
+    {
+      "session": "adat-test-DdEwol",
+      "output_pair": 4,
+      "input_pair": 2,
+      "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "max_poll_us": 1620,
+      "all_samples_zero": true
+    },
+    {
+      "session": "adat-test-HPvzBs",
+      "output_pair": 4,
+      "input_pair": 3,
+      "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "max_poll_us": 1627,
+      "all_samples_zero": true
+    }
+  ]
+}

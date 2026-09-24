@@ -88,9 +88,11 @@ confirmada. A [contraprova de 1–2 e 3–4](linux-research/reports/analog-pair-
 também diferenciou seus caminhos com seleções cruzadas. A identificação dos
 conectores depende do cabeamento informado; operação multicanal simultânea
 nos aplicativos ainda não foi implementada. Os [oito canais ADAT do gabinete](linux-research/reports/adat-enclosure-confirmed.md)
-passaram no Linux em quatro pares, com duas contraprovas de isolamento,
-zero XRUNs e estado Windows preservado. A inicialização digital a frio,
-o ADAT do módulo DIGITAL I/O e os oito canais simultâneos continuam pendentes.
+passaram no Linux em quatro pares, com a [matriz completa de 12 contraprovas de isolamento](linux-research/reports/adat-enclosure-matrix.md),
+zero XRUNs e estado Windows preservado. Os quatro retornos também foram
+comparados byte a byte com o sinal gerado, após alinhamento de 16 frames. O [ADAT do módulo DIGITAL I/O](linux-research/reports/adat-module-confirmed.md)
+também passou nos quatro pares e 12 isolamentos, sem nova passagem pelo Windows.
+A inicialização digital a frio e os oito canais simultâneos continuam pendentes.
 
 ```sh
 ./linux-research/build-channelmap.sh
@@ -131,3 +133,7 @@ python3 linux-research/tools/test_probe.py
 ```
 
 Esses testes usam arquivos temporários e simuladores; não carregam o módulo.
+
+
+A futura interface gráfica seguirá a organização do Hardware Setup da 192;
+veja o [plano do painel](linux-research/reports/gui-plan.md).

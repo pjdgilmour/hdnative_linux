@@ -1,0 +1,88 @@
+{
+  "dsi_sha256": "60af3e71ee24002b62ef1ab8535c0a3bd344b0c3d61e3e6d7ebdb5f73e642f34",
+  "prefs_sha256": "823b7c8461a492086507d14d435c93484d97ddba2f637e718dea72e460d63558",
+  "scope": "Offline candidate command bytes from saved software fields; NOT current readback or an initialization recipe. No hardware access.",
+  "sample_rate_assumption_hz": 48000,
+  "common_control1": "0x80",
+  "common_control1_fields": {
+    "rate_bits_0_2": 0,
+    "sync_bits_3_6": 0,
+    "master_status_bit7": true
+  },
+  "sync_table": [
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      11,
+      2,
+      0
+    ],
+    [
+      1,
+      2,
+      1
+    ],
+    [
+      6,
+      2,
+      2
+    ],
+    [
+      3,
+      3,
+      0
+    ],
+    [
+      4,
+      4,
+      0
+    ],
+    [
+      7,
+      5,
+      0
+    ],
+    [
+      8,
+      6,
+      0
+    ],
+    [
+      9,
+      7,
+      0
+    ],
+    [
+      10,
+      8,
+      0
+    ]
+  ],
+  "digital_saved_fields": {
+    "object_18": 0,
+    "object_1c": 0,
+    "source_enum": 3,
+    "src_pair_mask": 15,
+    "object_28": 1
+  },
+  "candidate_module_registers": {
+    "0x30": "0x00",
+    "0x31": "0x81",
+    "0x32": "0x00"
+  },
+  "hardware_module_register_readback": "unavailable in previous 0x30..0x32 queries",
+  "module_configuration_written": false,
+  "rvas": {
+    "master_status_export": "0x088ec0",
+    "master_getter": "0x1a4b80",
+    "master_setter": "0x1a5a80",
+    "sample_rate_encoder": "0x1a5050",
+    "common_writer": "0x1afbc0",
+    "digital_class_vtable": "0x7787d0",
+    "digital_writer": "0x1b1640",
+    "module_register_address": "0x1af740"
+  }
+}

@@ -8,13 +8,20 @@ def passed(profile, analysis, stats, exit_code, pci_same, unbound, module_remove
     inp, out = profile.get('input_pair'), profile.get('output_pair')
     if type(inp) is not int or type(out) is not int or not 1 <= inp <= 4 or not 1 <= out <= 4:
         return False
+    if profile.get('sync_profile', False):
+        if (path != 'module' or inp != 1 or out != 1 or profile.get('windows_state', False)
+                or profile.get('module_route', False) or profile.get('allow_idle_dma', False)
+                or profile.get('expectation') != 'loopback' or stats.get('sync_restored') != 'Y'):
+            return False
     if profile.get('windows_state', False):
-        if (path != 'enclosure' or
+        if (path != ('module' if profile.get('module_route', False) else 'enclosure') or
             profile.get('transport_channels') != [7+2*inp,8+2*inp] or
             profile.get('output_transport_channels') != [7+2*out,8+2*out] or
             profile.get('input_register') != hex(0x44+inp) or profile.get('output_selector') != 4+out or
             profile.get('allow_idle_dma') is not True):
             return False
+    if profile.get('module_route', False) and profile.get('windows_state') is not True:
+        return False
     base = 24 if path == 'enclosure' else 16
     mode = profile.get('expectation')
     if mode not in ('loopback', 'isolation') or (mode == 'isolation' and inp == out):

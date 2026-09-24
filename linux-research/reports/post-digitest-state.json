@@ -1,0 +1,80 @@
+{
+  "evidence_images_sha256": {
+    "192_firmware.png": "7bdf803fa3a6b32863b280c3fd606d66531a79a213f44a1de6182aeb32a2a9a2",
+    "firmware_version.png": "c5603c25ab0a88a1c9cc5f39faad22eef5bf1f6e8df346230dcc051ed8da5593"
+  },
+  "reported_windows_sequence": "DigiTest tests executed; Pro Tools not opened afterward",
+  "continuous_power_confirmed": false,
+  "continuous_power_note": "Not answered; do not infer a power cycle or a cold boot",
+  "peripheral_firmware_display": "4.9",
+  "offered_update_display": "4.9",
+  "flash_type_display": "B",
+  "native_fpga_display": "1.05.0 [0.02.0]",
+  "readback": {
+    "pci_identity": "0x0000d400",
+    "pci_firmware": "0x01050040",
+    "peripheral_id": 1,
+    "module_ids": [
+      20,
+      19,
+      21,
+      19
+    ],
+    "status_11_12_13": [
+      73,
+      1,
+      1
+    ],
+    "control_0_1_2_3": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "routes_40_5d": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "dma_address_fields": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "transport_passes_stable": true,
+    "transport_preconditions_match": true,
+    "route_passes_stable": true,
+    "pci_command_restored": true
+  },
+  "scope": "identification and read-only diagnostics; no peripheral WRITE, reset, audio, firmware update"
+}

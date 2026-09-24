@@ -3,7 +3,9 @@ set -eu
 cd -- "$(dirname -- "$0")"
 make -C "/lib/modules/$(uname -r)/build" M="$PWD/kernel" W=1 avid_native_adat.ko
 python3 tools/test_adat_control.py
+python3 tools/test_adat_sync.py
 python3 tools/test_adat_mailbox.py
+python3 tools/test_adat_module_route.py
 python3 tools/test_adat_lifecycle.py
 python3 tools/test_adat_idle_dma.py
 python3 tools/test_adat_windows_state.py

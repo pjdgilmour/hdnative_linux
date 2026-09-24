@@ -1,0 +1,377 @@
+{
+  "sessions": [
+    {
+      "session": "adat-test-517Q9N",
+      "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "all_samples_zero": true,
+      "result": {
+        "output_pair": 1,
+        "input_pair": 1,
+        "expectation": "loopback",
+        "windows_state": false,
+        "module_route": false,
+        "transport_channels": [
+          1,
+          2
+        ],
+        "output_transport_channels": [
+          1,
+          2
+        ],
+        "input_register": "0x41",
+        "output_selector": 1,
+        "allow_idle_dma": false,
+        "optical_path": "module",
+        "test_scope": "route-only; current format/SRC retained; physical cable required",
+        "output_channels": [
+          1,
+          2
+        ],
+        "input_channels": [
+          1,
+          2
+        ],
+        "expected_module_ids": "0x13151314",
+        "output_register": "0x51",
+        "input_selector": 17,
+        "sample_rate": 48000,
+        "physical_wiring": "user supplied optical cable OUT to IN on the same selected optical port bank",
+        "module_sha256": "e89f683d0a49b956a953614d7f24679cfffc013a30513f426042ea3064be0c85",
+        "passed": false,
+        "pci_header_restored": true,
+        "pci_unbound": true,
+        "module_removed": true,
+        "stats": {
+          "bound": "Y",
+          "starts": "1",
+          "stops": "1",
+          "xruns": "0",
+          "last_error": "0",
+          "total_frames": "480269",
+          "last_frames": "480269",
+          "ring_wraps": "29",
+          "tx_frames": "480278",
+          "max_poll_us": "1612",
+          "mute_restored": "Y",
+          "route_restored": "Y"
+        },
+        "analysis": {
+          "frames": 480000,
+          "rate": 48000,
+          "format": "S24_3LE",
+          "channels": [
+            {
+              "peak_dbfs": null,
+              "rms_dbfs": null,
+              "dc": 0.0,
+              "nonzero_samples": 0,
+              "near_clip_samples": 0
+            },
+            {
+              "peak_dbfs": null,
+              "rms_dbfs": null,
+              "dc": 0.0,
+              "nonzero_samples": 0,
+              "near_clip_samples": 0
+            }
+          ],
+          "loopback": true,
+          "nonzero_both_channels": false,
+          "loopback_pattern_matched": false,
+          "spectral_windows": [
+            [
+              {
+                "frequency": 750,
+                "amplitude": 0.0,
+                "amplitude_dbfs": null,
+                "tone_fraction": 0
+              },
+              {
+                "frequency": 1500,
+                "amplitude": 0.0,
+                "amplitude_dbfs": null,
+                "tone_fraction": 0
+              }
+            ],
+            [
+              {
+                "frequency": 750,
+                "amplitude": 0.0,
+                "amplitude_dbfs": null,
+                "tone_fraction": 0
+              },
+              {
+                "frequency": 1500,
+                "amplitude": 0.0,
+                "amplitude_dbfs": null,
+                "tone_fraction": 0
+              }
+            ],
+            [
+              {
+                "frequency": 750,
+                "amplitude": 0.0,
+                "amplitude_dbfs": null,
+                "tone_fraction": 0
+              },
+              {
+                "frequency": 1500,
+                "amplitude": 0.0,
+                "amplitude_dbfs": null,
+                "tone_fraction": 0
+              }
+            ]
+          ],
+          "analysis_version": 2,
+          "isolation_windows": {
+            "startup": {
+              "start_seconds": 0,
+              "end_seconds": 1,
+              "channels": [
+                {
+                  "rms_dbfs": null,
+                  "peak_dbfs": null
+                },
+                {
+                  "rms_dbfs": null,
+                  "peak_dbfs": null
+                }
+              ]
+            },
+            "steady": {
+              "start_seconds": 1,
+              "end_seconds": 9,
+              "channels": [
+                {
+                  "rms_dbfs": null,
+                  "peak_dbfs": null
+                },
+                {
+                  "rms_dbfs": null,
+                  "peak_dbfs": null
+                }
+              ]
+            },
+            "ending": {
+              "start_seconds": 9,
+              "end_seconds": 10,
+              "channels": [
+                {
+                  "rms_dbfs": null,
+                  "peak_dbfs": null
+                },
+                {
+                  "rms_dbfs": null,
+                  "peak_dbfs": null
+                }
+              ]
+            }
+          },
+          "expectation": "loopback",
+          "expectation_met": false,
+          "optical_path": "module",
+          "format_control_written": false,
+          "clock_control_written": false,
+          "input_pair": 1,
+          "input_channels": [
+            1,
+            2
+          ],
+          "on_tone_amplitude_limits_dbfs": [
+            -43,
+            -37
+          ]
+        },
+        "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3"
+      }
+    },
+    {
+      "session": "adat-test-jPNMgc",
+      "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3",
+      "all_samples_zero": true,
+      "result": {
+        "output_pair": 1,
+        "input_pair": 1,
+        "expectation": "loopback",
+        "sync_profile": true,
+        "windows_state": false,
+        "module_route": false,
+        "transport_channels": [
+          1,
+          2
+        ],
+        "output_transport_channels": [
+          1,
+          2
+        ],
+        "input_register": "0x41",
+        "output_selector": 1,
+        "allow_idle_dma": false,
+        "optical_path": "module",
+        "test_scope": "temporary control1 master bit with route/mute rollback; not full initialization",
+        "output_channels": [
+          1,
+          2
+        ],
+        "input_channels": [
+          1,
+          2
+        ],
+        "expected_module_ids": "0x13151314",
+        "output_register": "0x51",
+        "input_selector": 17,
+        "sample_rate": 48000,
+        "physical_wiring": "user supplied optical cable OUT to IN on the same selected optical port bank",
+        "module_sha256": "0b738f107a18525b66258278c080b48f0c060c42a95fc78c93057c9f26e41580",
+        "passed": false,
+        "pci_header_restored": true,
+        "pci_unbound": true,
+        "module_removed": true,
+        "stats": {
+          "bound": "Y",
+          "starts": "1",
+          "stops": "1",
+          "xruns": "0",
+          "last_error": "0",
+          "total_frames": "480260",
+          "last_frames": "480260",
+          "ring_wraps": "29",
+          "tx_frames": "480270",
+          "max_poll_us": "1610",
+          "mute_restored": "Y",
+          "route_restored": "Y",
+          "sync_restored": "Y"
+        },
+        "analysis": {
+          "frames": 480000,
+          "rate": 48000,
+          "format": "S24_3LE",
+          "channels": [
+            {
+              "peak_dbfs": null,
+              "rms_dbfs": null,
+              "dc": 0.0,
+              "nonzero_samples": 0,
+              "near_clip_samples": 0
+            },
+            {
+              "peak_dbfs": null,
+              "rms_dbfs": null,
+              "dc": 0.0,
+              "nonzero_samples": 0,
+              "near_clip_samples": 0
+            }
+          ],
+          "loopback": true,
+          "nonzero_both_channels": false,
+          "loopback_pattern_matched": false,
+          "spectral_windows": [
+            [
+              {
+                "frequency": 750,
+                "amplitude": 0.0,
+                "amplitude_dbfs": null,
+                "tone_fraction": 0
+              },
+              {
+                "frequency": 1500,
+                "amplitude": 0.0,
+                "amplitude_dbfs": null,
+                "tone_fraction": 0
+              }
+            ],
+            [
+              {
+                "frequency": 750,
+                "amplitude": 0.0,
+                "amplitude_dbfs": null,
+                "tone_fraction": 0
+              },
+              {
+                "frequency": 1500,
+                "amplitude": 0.0,
+                "amplitude_dbfs": null,
+                "tone_fraction": 0
+              }
+            ],
+            [
+              {
+                "frequency": 750,
+                "amplitude": 0.0,
+                "amplitude_dbfs": null,
+                "tone_fraction": 0
+              },
+              {
+                "frequency": 1500,
+                "amplitude": 0.0,
+                "amplitude_dbfs": null,
+                "tone_fraction": 0
+              }
+            ]
+          ],
+          "analysis_version": 2,
+          "isolation_windows": {
+            "startup": {
+              "start_seconds": 0,
+              "end_seconds": 1,
+              "channels": [
+                {
+                  "rms_dbfs": null,
+                  "peak_dbfs": null
+                },
+                {
+                  "rms_dbfs": null,
+                  "peak_dbfs": null
+                }
+              ]
+            },
+            "steady": {
+              "start_seconds": 1,
+              "end_seconds": 9,
+              "channels": [
+                {
+                  "rms_dbfs": null,
+                  "peak_dbfs": null
+                },
+                {
+                  "rms_dbfs": null,
+                  "peak_dbfs": null
+                }
+              ]
+            },
+            "ending": {
+              "start_seconds": 9,
+              "end_seconds": 10,
+              "channels": [
+                {
+                  "rms_dbfs": null,
+                  "peak_dbfs": null
+                },
+                {
+                  "rms_dbfs": null,
+                  "peak_dbfs": null
+                }
+              ]
+            }
+          },
+          "expectation": "loopback",
+          "expectation_met": false,
+          "optical_path": "module",
+          "format_control_written": false,
+          "clock_control_written": false,
+          "input_pair": 1,
+          "input_channels": [
+            1,
+            2
+          ],
+          "on_tone_amplitude_limits_dbfs": [
+            -43,
+            -37
+          ]
+        },
+        "raw_sha256": "1b97524801d8c93d65973ee64c84ce13cf8ab979672b2666f225f8591f02a5b3"
+      }
+    }
+  ],
+  "conclusion": "Master bit alone did not recover ADAT module loopback in this post-DigiTest state; not proof of cold initialization or a unique cause."
+}

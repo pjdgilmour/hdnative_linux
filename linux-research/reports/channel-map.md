@@ -26,7 +26,8 @@ diferenciou os dois caminhos com seleções cruzadas. A numeração física
 continua vinculada ao cabeamento informado. Os oito canais ADAT do gabinete passaram no loopback em Linux, em pares,
 com o estado Windows preservado e duas contraprovas de isolamento.
 Veja o [resultado confirmado](adat-enclosure-confirmed.md). O ADAT do módulo
-DIGITAL I/O e a inicialização digital a frio continuam pendentes. Os aplicativos
+DIGITAL I/O também passou na [matriz completa](adat-module-confirmed.md),
+sem nova passagem pelo Windows. A inicialização digital a frio continua pendente. Os aplicativos
 continuam com o módulo duplex estéreo validado.
 
 ## Observação dos LEDs no primeiro banco
@@ -390,3 +391,48 @@ confirmaram os quatro pares e as duas contraprovas cruzadas. Todas tiveram
 zero XRUNs, preservação do perfil e restauração PCI; os arquivos de
 isolamento contêm somente zeros. A espera passiva do mailbox permitiu
 concluir a sequência. [Evidências e limites](adat-enclosure-confirmed.md).
+
+
+## Matriz ADAT completa executada com sudo autorizado
+
+Quatro retornos positivos e todas as 12 combinações cruzadas passaram.
+Os quatro retornos coincidiram byte a byte com a referência gerada em
+479984 frames por captura, após alinhamento de 16 frames; as contraprovas
+foram inteiramente zero. Nenhum XRUN, módulo removido e PCI restaurado.
+[Relatório, sessões e limites](adat-enclosure-matrix.md). O próximo caminho
+pendente é o ADAT do módulo; a [GUI futura](gui-plan.md) depende dos controles
+ainda não implementados.
+
+## Ensaio do módulo sem reinicializar no Windows
+
+Após mover o cabo, o perfil manteve as rotas do gabinete, com status 0x12=1.
+Foi preparado o modo de duas rotas temporárias [--module-route](adat-module-route.md),
+com restauração integral e controles digitais preservados. O resultado
+físico será registrado no mesmo relatório. O [DigiTest instalado](digitest-firmware-inventory.md)
+contém recursos de firmware candidatos para a família 192, sem atualização efetuada.
+
+
+## ADAT do módulo confirmado sem nova sessão Windows
+
+Todos os quatro pares e os 12 cruzamentos passaram com --module-route,
+sem XRUNs e com restauração das duas rotas após cada execução. O teste
+preservou formato, SRC, clock, mute e firmware. [Sessões e limites](adat-module-confirmed.md).
+
+
+## Nova referência após os diagnósticos DigiTest
+
+Os prints confirmaram firmware 4.9 instalado e oferecido para a 192, flash
+tipo B. O usuário executou os diagnósticos e não abriu o Pro Tools depois.
+As leituras Linux mostraram controles 02/00/00/00, rotas e bases DMA zeradas.
+Os ensaios aprovados continuam válidos para seus estados originais; o
+perfil atual não deve ser tratado como o perfil Windows preservado.
+[Evidência e investigação de inicialização](firmware-49-confirmed.md).
+
+
+## Comparação pós-DigiTest: controle de mestre
+
+Dois testes no módulo digital, com cabo confirmado, receberam apenas silêncio:
+rotas/mute e depois as mesmas rotas/mute com controle1=0x80 temporário.
+Zero XRUNs; restauração completa, conferida por leitura posterior. O bit de
+mestre isolado não inicializou o ADAT nesse estado.
+[Sequência, evidência DSI e candidatos dos controles do módulo](adat-sync-experiment.md).

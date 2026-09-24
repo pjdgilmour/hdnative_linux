@@ -7,7 +7,7 @@ bdf=0000:81:00.0
 case "${1-}" in
   enclosure) optical_path=enclosure; optical_id=1; physical_name='óptico do gabinete (conectores fixos)' ;;
   module) optical_path=module; optical_id=2; physical_name='óptico do módulo DIGITAL I/O' ;;
-  *) echo 'Uso: sudo ./run-adat-test.sh enclosure|module PAR_SAIDA(1..4) PAR_ENTRADA(1..4) [--expect-isolation] [--allow-idle-dma] [--windows-state]'; exit 2 ;;
+  *) echo 'Uso: sudo ./run-adat-test.sh enclosure|module PAR_SAIDA(1..4) PAR_ENTRADA(1..4) [--expect-isolation] [--allow-idle-dma] [--windows-state] [--module-route] [--sync-profile]'; exit 2 ;;
 esac
 case "${2-}:${3-}" in
   [1-4]:[1-4]) output_pair=$2; input_pair=$3 ;;
@@ -16,20 +16,31 @@ esac
 expectation=loopback
 allow_idle_dma=0
 windows_state=0
+module_route=0
+sync_profile=0
 for option in "${@:4}"; do
     case "$option" in
         --expect-isolation) [[ $expectation == loopback ]] || exit 2; expectation=isolation ;;
         --allow-idle-dma) ((allow_idle_dma == 0)) || exit 2; allow_idle_dma=1 ;;
         --windows-state) ((windows_state == 0)) || exit 2; windows_state=1 ;;
+        --sync-profile) ((sync_profile == 0)) || exit 2; sync_profile=1 ;;
+        --module-route) ((module_route == 0)) || exit 2; module_route=1 ;;
         *) echo "Opção desconhecida: $option"; exit 2 ;;
     esac
 done
 if [[ $expectation == isolation ]]; then
     ((output_pair != input_pair)) || { echo 'Isolamento exige pares distintos.'; exit 2; }
 fi
-if ((windows_state)); then
+if ((module_route)); then
+    [[ $optical_path == module && $windows_state == 0 ]] || { echo '--module-route exige module e não combina com --windows-state.'; exit 2; }
+    windows_state=1
+    allow_idle_dma=1
+elif ((windows_state)); then
     [[ $optical_path == enclosure ]] || { echo 'Windows-state somente óptico do gabinete.'; exit 2; }
     allow_idle_dma=1
+fi
+if ((sync_profile)); then
+    [[ $optical_path == module && $input_pair == 1 && $output_pair == 1 && $windows_state == 0 && $module_route == 0 && $allow_idle_dma == 0 && $expectation == loopback ]] || { echo '--sync-profile exige module 1 1 e nenhuma outra opção.'; exit 2; }
 fi
 ((EUID == 0)) || { echo 'Execute com sudo no terminal local.'; exit 1; }
 for tool in /usr/sbin/insmod /usr/sbin/rmmod /usr/sbin/modprobe /usr/sbin/modinfo /usr/bin/arecord timeout python3; do
@@ -54,7 +65,7 @@ loaded=0
 stats() {
     [[ -d /sys/module/$module ]] || return 0
     local key
-    for key in bound starts stops xruns last_error total_frames last_frames ring_wraps tx_frames max_poll_us mute_restored route_restored; do
+    for key in bound starts stops xruns last_error total_frames last_frames ring_wraps tx_frames max_poll_us mute_restored route_restored sync_restored; do
         printf '%s=' "$key"; cat "/sys/module/$module/parameters/$key"
     done
 }
@@ -111,7 +122,10 @@ trap 'exit 130' INT
 trap 'exit 143' TERM HUP
 # Save console output; directory stays private to root until cleanup hands it to sudo user.
 exec > >(tee "$run_dir/console.log") 2>&1
-if ((windows_state)); then
+if ((module_route)); then
+    echo "Resultado esperado: $expectation; teste do módulo com duas rotas temporárias e restauração ao perfil original."
+    echo 'MODULE_ROUTE=yes; formato ADAT/SRC/clock e mute preservados; não atualiza firmware.'
+elif ((windows_state)); then
     echo "Resultado esperado: $expectation; TX lógico $((7+2*output_pair))–$((8+2*output_pair)), RX lógico $((7+2*input_pair))–$((8+2*input_pair)); rotas Windows preservadas."
     echo 'WINDOWS_STATE=yes; não serão enviados comandos WRITE à 192; controles e 30 rotas serão conferidos.'
 else
@@ -119,23 +133,28 @@ else
 fi
 echo "Cabo OUT -> IN no mesmo $physical_name. Saída $((2*output_pair-1))–$((2*output_pair)) / entrada $((2*input_pair-1))–$((2*input_pair))."
 echo "OPTICAL_PATH=$optical_path; windows_state=$windows_state"
-echo "ADAT, SRC e clock são preservados; o teste não inicializa o formato digital."
+if ((sync_profile)); then
+    echo 'SYNC_PROFILE=yes; controle1 temporário 00 -> 80 -> 00; teste do bit de mestre, 48 kHz/interno.'
+    echo 'Formato/SRC do módulo preservados. Não é uma inicialização digital completa.'
+else
+    echo "ADAT, SRC e clock são preservados; o teste não inicializa o formato digital."
+fi
 if ((allow_idle_dma)); then
     echo 'DMA: aceita endereços residuais estáveis somente com motores/master desligados; usa buffers novos do Linux.'
 fi
 echo 'Gravação de 10 s; 750 Hz no primeiro canal, 1500 Hz no segundo, depois ambos; pico -40 dBFS.'
 echo 'Mantenha monitores mutados, trabalho salvo e 192 no mesmo estado de 48 kHz.'
-python3 - "$run_dir" "$output_pair" "$input_pair" "$expectation" "$optical_path" "$allow_idle_dma" "$windows_state" <<'PY'
+python3 - "$run_dir" "$output_pair" "$input_pair" "$expectation" "$optical_path" "$allow_idle_dma" "$windows_state" "$module_route" "$sync_profile" <<'PY'
 from pathlib import Path
 import sys,json,hashlib
 r=Path(sys.argv[1]);o=int(sys.argv[2]);i=int(sys.argv[3]);optical=sys.argv[5]
 base=24 if optical=='enclosure' else 16
 windows=bool(int(sys.argv[7]))
 r.joinpath('profile.json').write_text(json.dumps({'output_pair':o,'input_pair':i,'expectation':sys.argv[4],
-    'windows_state':windows,'transport_channels':[7+2*i,8+2*i] if windows else [1,2],
+    'sync_profile':bool(int(sys.argv[9])),'windows_state':windows,'module_route':bool(int(sys.argv[8])),'transport_channels':[7+2*i,8+2*i] if windows else [1,2],
     'output_transport_channels':[7+2*o,8+2*o] if windows else [1,2],
     'input_register':hex(0x44+i) if windows else '0x41','output_selector':4+o if windows else 1,
-    'allow_idle_dma':bool(int(sys.argv[6])),'optical_path':optical,'test_scope':'observed Windows profile, no peripheral writes' if windows else 'route-only; current format/SRC retained; physical cable required',
+    'allow_idle_dma':bool(int(sys.argv[6])),'optical_path':optical,'test_scope':'temporary control1 master bit with route/mute rollback; not full initialization' if int(sys.argv[9]) else 'two temporary module routes, restore exact warm profile' if int(sys.argv[8]) else 'observed Windows profile, no peripheral writes' if windows else 'route-only; current format/SRC retained; physical cable required',
     'output_channels':[2*o-1,2*o],'input_channels':[2*i-1,2*i],
     'expected_module_ids':'0x13151314','output_register':hex(0x40+base+o),
     'input_selector':base+i,'sample_rate':48000,'physical_wiring':'user supplied optical cable OUT to IN on the same selected optical port bank',
@@ -143,7 +162,7 @@ r.joinpath('profile.json').write_text(json.dumps({'output_pair':o,'input_pair':i
 PY
 /usr/sbin/modprobe snd_pcm
 loaded=1
-/usr/sbin/insmod "kernel/$module.ko" enable_experimental=1 loopback=1 windows_state="$windows_state" allow_idle_dma="$allow_idle_dma" optical_path="$optical_id" output_pair="$output_pair" input_pair="$input_pair"
+/usr/sbin/insmod "kernel/$module.ko" enable_experimental=1 loopback=1 sync_profile="$sync_profile" module_route="$module_route" windows_state="$windows_state" allow_idle_dma="$allow_idle_dma" optical_path="$optical_id" output_pair="$output_pair" input_pair="$input_pair"
 [[ $(cat /sys/module/$module/parameters/bound) == Y ]]
 echo 'ALSA_CAPTURE_DEVICE=hw:AvidAdat,0'
 timeout --signal=TERM --kill-after=3s 18s /usr/bin/arecord --fatal-errors \
@@ -152,5 +171,6 @@ timeout --signal=TERM --kill-after=3s 18s /usr/bin/arecord --fatal-errors \
 stats
 for key in last_error xruns; do [[ $(cat /sys/module/$module/parameters/$key) == 0 ]]; done
 for key in mute_restored route_restored; do [[ $(cat /sys/module/$module/parameters/$key) == Y ]]; done
+if ((sync_profile)); then [[ $(cat /sys/module/$module/parameters/sync_restored) == Y ]]; fi
 python3 tools/analyze_adat.py "$run_dir/capture.raw" --optical-path "$optical_path" --input-pair "$input_pair" --expectation "$expectation"
 echo 'Análise concluída; o resultado do par será emitido depois da restauração PCI.'
